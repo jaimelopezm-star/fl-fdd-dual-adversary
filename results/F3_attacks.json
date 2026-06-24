@@ -1,0 +1,76 @@
+{
+  "config": {
+    "seed": 0,
+    "n_clients": 5,
+    "alpha": 0.5,
+    "rounds": 20,
+    "local_epochs": 2,
+    "lr": 0.001,
+    "n_malicious": 2,
+    "model_sigma": 0.5
+  },
+  "malicious_ids": [
+    0,
+    1
+  ],
+  "scenarios": {
+    "S0": "limpio",
+    "S1": "solo Adv1 (FDI sensor)",
+    "S2": "solo Adv2 (label-flip + modelo)",
+    "S3": "dual coordinado (Adv1+Adv2)"
+  },
+  "grid": {
+    "FedAvg": {
+      "S0": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      },
+      "S1": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      },
+      "S2": {
+        "acc": 0.7752442996742671,
+        "DR": 0.5309447959198935,
+        "FAR": 0.0,
+        "ASR": 0.38961038961038963
+      },
+      "S3": {
+        "acc": 0.7785016286644951,
+        "DR": 0.5403000254258835,
+        "FAR": 0.0,
+        "ASR": 0.35714285714285715
+      }
+    },
+    "AutoGM": {
+      "S0": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      },
+      "S1": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      },
+      "S2": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      },
+      "S3": {
+        "acc": 1.0,
+        "DR": 1.0,
+        "FAR": 0.0,
+        "ASR": 0.0
+      }
+    }
+  }
+}
