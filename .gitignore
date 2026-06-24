@@ -1,0 +1,21 @@
+# --- Datos crudos CWRU (se descargan automáticamente con data/download_cwru.py) ---
+data/raw/
+*.mat
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- Entornos ---
+.venv/
+venv/
+env/
+
+# --- Notebooks: checkpoints y outputs pesados se mantienen sólo en el .ipynb versionado ---
+# (los .json de results/ SÍ se versionan: son ligeros y documentan cada corrida)
+
+# --- Sistema ---
+.DS_Store
+Thumbs.db
