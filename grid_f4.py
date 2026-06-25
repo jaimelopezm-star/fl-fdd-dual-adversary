@@ -143,12 +143,68 @@ def build_grid(cfg):
     return specs
 
 
+def _fmt(rec, i, n):
+    ev = "" if rec["a_malicious"] is None else f"a_mal={rec['a_malicious']:.3f} a_hon={rec['a_honest']:.3f}"
+    return (f"  [{i:4}/{n}] {rec['partition'][:4]} {rec['defense']:7} {rec['scenario']} "
+            f"a={rec['alpha']} fo={rec['fault_owners']} b={rec['beta']} {str(rec['model_mode']):11} "
+            f"ASR={rec['ASR']:.2f} DR={rec['DR']:.2f} {ev}")
+
+
+def _run_spec(payload):
+    """Worker para ejecución en paralelo. Cada celda es INDEPENDIENTE y con su propia semilla, así que
+    el resultado es idéntico al secuencial (la paralelización solo cambia el orden, no el cómputo)."""
+    idx, cfg, device, sp = payload
+    try:
+        import torch
+        torch.set_num_threads(1)   # evita sobre-suscripción de hilos entre procesos
+    except Exception:
+        pass
+    return idx, run_cell(cfg, device=device, **sp)
+
+
+def run_grid(cfg, specs, device="cpu", jobs=1):
+    """Ejecuta el grid (secuencial si jobs<=1; en paralelo por procesos si jobs>1).
+    Devuelve la lista de registros en ORDEN ESTABLE (independiente del orden de finalización)."""
+    n = len(specs)
+    try:
+        from tqdm import tqdm
+    except ImportError:
+        tqdm = lambda x, **k: x
+
+    if jobs and jobs > 1:
+        from concurrent.futures import ProcessPoolExecutor, as_completed
+        results = [None] * n
+        payloads = [(i, cfg, device, sp) for i, sp in enumerate(specs)]
+        with ProcessPoolExecutor(max_workers=jobs) as ex:
+            futs = [ex.submit(_run_spec, p) for p in payloads]
+            done = 0
+            for fut in tqdm(as_completed(futs), total=n, desc=f"grid {cfg['name']} x{jobs}", unit="celda"):
+                idx, rec = fut.result()
+                results[idx] = rec
+                done += 1
+                print(_fmt(rec, done, n), flush=True)
+        return results
+
+    records = []
+    for i, sp in tqdm(list(enumerate(specs, 1)), total=n, desc=f"grid {cfg['name']}", unit="celda"):
+        rec = run_cell(cfg, device=device, **sp)
+        records.append(rec)
+        print(_fmt(rec, i, n), flush=True)
+    return records
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True, help="ruta al YAML de configuración")
     ap.add_argument("--device", default="cpu")
+    ap.add_argument("--jobs", type=int, default=1,
+                    help="nº de procesos en paralelo (cada celda es independiente; no altera resultados)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+
+    if args.jobs > 1 and args.device == "cuda":
+        print("[grid_f4] AVISO: --jobs>1 con --device cuda hace que varios procesos compartan la GPU "
+              "(riesgo en GPUs chicas). Para paralelizar conviene --device cpu (modelo diminuto).")
 
     cfg = load_config(args.config)
     name = cfg["name"]
@@ -157,24 +213,13 @@ def main():
     specs = build_grid(cfg)
     print(f"[grid_f4] config='{name}' -> {len(specs)} celdas | "
           f"win={cfg['data']['window']} stride={cfg['data']['stride']} "
-          f"n_clients={cfg['fl']['n_clients']} rounds={cfg['fl']['rounds']} device={args.device}")
+          f"n_clients={cfg['fl']['n_clients']} rounds={cfg['fl']['rounds']} "
+          f"device={args.device} jobs={args.jobs}")
 
-    try:
-        from tqdm import tqdm
-        iterator = tqdm(list(enumerate(specs, 1)), total=len(specs), desc=f"grid {name}", unit="celda")
-    except ImportError:
-        iterator = enumerate(specs, 1)
+    t0 = time.time()
+    records = run_grid(cfg, specs, device=args.device, jobs=args.jobs)
 
-    records, t0 = [], time.time()
-    for i, sp in iterator:
-        rec = run_cell(cfg, device=args.device, **sp)
-        records.append(rec)
-        ev = "" if rec["a_malicious"] is None else f"a_mal={rec['a_malicious']:.3f} a_hon={rec['a_honest']:.3f}"
-        print(f"  [{i:4}/{len(specs)}] {rec['partition'][:4]} {rec['defense']:7} {rec['scenario']} "
-              f"a={rec['alpha']} fo={rec['fault_owners']} b={rec['beta']} {str(rec['model_mode']):11} "
-              f"ASR={rec['ASR']:.2f} DR={rec['DR']:.2f} {ev}", flush=True)
-
-    payload = {"config": cfg, "meta": {"n_cells": len(records), "device": args.device,
+    payload = {"config": cfg, "meta": {"n_cells": len(records), "device": args.device, "jobs": args.jobs,
                                        "elapsed_s": round(time.time() - t0, 1)},
                "records": records}
     with open(out, "w", encoding="utf-8") as f:
