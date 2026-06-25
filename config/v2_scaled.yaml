@@ -1,0 +1,38 @@
+# v2_scaled — REESCALADO para Colab/pod (GPU). Prueba si las conclusiones de v1 aguantan a mayor escala.
+# Tres palancas de escala vs v1: (1) ventanas con SOLAPE (stride 512 ≈ 4x datos, ~6000 ventanas),
+# (2) MÁS clientes (30) para que 'minoría' sea realista, (3) MÁS rondas (40) para convergencia.
+# Si el patrón de v1 se mantiene -> conclusión sólida; si se rompe -> se recupera la hipótesis original
+# (el dual coordinado SÍ vence a AutoGM a escala realista).
+name: v2_scaled
+description: >
+  CWRU con solape (stride 512), 30 clientes, 40 rondas, 2 semillas, 3 defensas. Pensado para GPU.
+  NOTA de validez: el solape puede solapar ventanas entre train/test (fuga optimista); el split es
+  estratificado por clase. Reportar este caveat. Para rigor máximo, separar por segmento de señal.
+
+data:
+  window: 2048
+  stride: 512         # SOLAPE 4x -> más instancias (aborda 'pocas instancias para aprender/evadir')
+
+fl:
+  n_clients: 30       # más dispositivos -> 'minoría' (p.ej. 10-20%) realista
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+
+grid:
+  seeds: [0, 1]
+  alphas: [0.5, 0.3]
+  betas: [0.1, 0.2, 0.3, 0.4]
+  defenses: [FedAvg, AutoGM, D-WFA]
+  fault_owners: [2, 4, 6]
+  target_class: 3
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+
+# Tamaño aprox. del grid: ~288 celdas. En GPU de Colab corre en ~1-2 h. Para acortar: baja seeds a [0]
+# o quita alpha=1.0. Para alargar/robustecer: sube seeds o añade alphas.

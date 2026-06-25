@@ -1,0 +1,1487 @@
+{
+  "meta": {
+    "n_clients": 10,
+    "rounds": 20,
+    "full": false,
+    "n_cells": 52,
+    "elapsed_s": 750.0
+  },
+  "records": [
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.1
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.15393988627132413,
+      "a_honest": 0.08651502843216896
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5294117647058824,
+      "DR": 0.18439716312056734,
+      "FAR": 0.17575757575757575,
+      "ASR": 0.3120567375886525,
+      "recall_per_class": [
+        0.8242424242424242,
+        0.02127659574468085,
+        0.48936170212765956,
+        0.0425531914893617
+      ],
+      "a_malicious": 0.15393988627132413,
+      "a_honest": 0.08651502843216896
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.9967320261437909,
+      "DR": 0.9929078014184397,
+      "FAR": 0.0,
+      "ASR": 0.0070921985815602835,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        0.9787234042553191,
+        1.0
+      ],
+      "a_malicious": 0.15393988627132413,
+      "a_honest": 0.08651502843216896
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5294117647058824,
+      "DR": 0.2127659574468085,
+      "FAR": 0.2,
+      "ASR": 0.24822695035460993,
+      "recall_per_class": [
+        0.8,
+        0.0425531914893617,
+        0.574468085106383,
+        0.02127659574468085
+      ],
+      "a_malicious": 0.15393988627132413,
+      "a_honest": 0.08651502843216896
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.15393988627132413,
+      "a_honest": 0.08651502843216896
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1750609260763607,
+      "a_honest": 0.049959382615759544
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1750609260763607,
+      "a_honest": 0.049959382615759544
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1750609260763607,
+      "a_honest": 0.049959382615759544
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1750609260763607,
+      "a_honest": 0.049959382615759544
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1750609260763607,
+      "a_honest": 0.049959382615759544
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.03546099290780142,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.1
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.10073111291632819,
+      "a_honest": 0.09981722177091795
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.7124183006535948,
+      "DR": 0.375886524822695,
+      "FAR": 0.0,
+      "ASR": 0.5035460992907801,
+      "recall_per_class": [
+        1.0,
+        0.0425531914893617,
+        0.8936170212765957,
+        0.19148936170212766
+      ],
+      "a_malicious": 0.10073111291632819,
+      "a_honest": 0.09981722177091795
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.02127659574468085,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.10073111291632819,
+      "a_honest": 0.09981722177091795
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.7156862745098039,
+      "DR": 0.3829787234042554,
+      "FAR": 0.0,
+      "ASR": 0.425531914893617,
+      "recall_per_class": [
+        1.0,
+        0.0851063829787234,
+        0.9148936170212766,
+        0.14893617021276595
+      ],
+      "a_malicious": 0.10073111291632819,
+      "a_honest": 0.09981722177091795
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.10073111291632819,
+      "a_honest": 0.09981722177091795
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1720146222583266,
+      "a_honest": 0.05199025182778229
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5424836601307189,
+      "DR": 0.02127659574468085,
+      "FAR": 0.012121212121212121,
+      "ASR": 0.9645390070921985,
+      "recall_per_class": [
+        0.9878787878787879,
+        0.0,
+        0.06382978723404255,
+        0.0
+      ],
+      "a_malicious": 0.1720146222583266,
+      "a_honest": 0.05199025182778229
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1720146222583266,
+      "a_honest": 0.05199025182778229
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5555555555555556,
+      "DR": 0.06382978723404255,
+      "FAR": 0.024242424242424242,
+      "ASR": 0.9078014184397163,
+      "recall_per_class": [
+        0.9757575757575757,
+        0.0,
+        0.19148936170212766,
+        0.0
+      ],
+      "a_malicious": 0.1720146222583266,
+      "a_honest": 0.05199025182778229
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1720146222583266,
+      "a_honest": 0.05199025182778229
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.10000000229105353
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.13654933646321296,
+      "a_honest": 0.09086266632657498
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.001169713120907545,
+      "a_honest": 0.12470757144037634
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.9901960784313726,
+      "DR": 0.9787234042553191,
+      "FAR": 0.0,
+      "ASR": 0.02127659574468085,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        0.9574468085106383,
+        0.9787234042553191
+      ],
+      "a_malicious": 0.18137684762477874,
+      "a_honest": 0.07965578332077712
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.0011598290235269814,
+      "a_honest": 0.1247100466163829
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        0
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.1790051430463791,
+      "a_honest": 0.08024871998932212
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.2324192151427269,
+      "a_honest": 0.011720523874585827
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 0.9929078014184397,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.09580648262053729,
+      "a_honest": 0.10279568539311489
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.21049519237130881,
+      "a_honest": 0.026336538388083378
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 0.9929078014184397,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.09845923501998186,
+      "a_honest": 0.10102717677752177
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.5,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        0,
+        3,
+        9
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.21000698264688253,
+      "a_honest": 0.026662008355682096
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.07801418439716312,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.09999999709427357
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.052336856909096244,
+      "a_honest": 0.11191578477155417
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0070921985815602835,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 1.2798724711160502e-07,
+      "a_honest": 0.12499997020497063
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.02127659574468085,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.10837604701519013,
+      "a_honest": 0.09790599355474114
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 9.992821006221675e-08,
+      "a_honest": 0.1249999794060102
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.2,
+      "n_malicious": 2,
+      "malicious_ids": [
+        7,
+        3
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.014184397163120567,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": 0.10503144934773445,
+      "a_honest": 0.09874213533475995
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S1",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.24998315966695372,
+      "a_honest": 1.1224397955326518e-05
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5424836601307189,
+      "DR": 0.02127659574468085,
+      "FAR": 0.012121212121212121,
+      "ASR": 0.9645390070921985,
+      "recall_per_class": [
+        0.9878787878787879,
+        0.0,
+        0.06382978723404255,
+        0.0
+      ],
+      "a_malicious": 0.1530945584177971,
+      "a_honest": 0.06460362343738477
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S2",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.24505291591922287,
+      "a_honest": 0.0032980552738687643
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "gaussian",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.028368794326241134,
+      "FAR": 0.024242424242424242,
+      "ASR": 0.9432624113475178,
+      "recall_per_class": [
+        0.9757575757575757,
+        0.02127659574468085,
+        0.06382978723404255,
+        0.0
+      ],
+      "a_malicious": 0.16162041742354633,
+      "a_honest": 0.05891972041378419
+    },
+    {
+      "partition": "dirichlet",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": 0.3,
+      "fault_owners": null,
+      "beta": 0.4,
+      "n_malicious": 4,
+      "malicious_ids": [
+        7,
+        3,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.24698512481700163,
+      "a_honest": 0.0020099183527842496
+    },
+    {
+      "partition": "concentrated",
+      "defense": "FedAvg",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 2,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.9869281045751634,
+      "DR": 0.9716312056737588,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        0.9148936170212766
+      ],
+      "a_malicious": null,
+      "a_honest": 0.1
+    },
+    {
+      "partition": "concentrated",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 2,
+      "beta": 1.0,
+      "n_malicious": 2,
+      "malicious_ids": [
+        8,
+        5
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "a_malicious": 0.1303818034118603,
+      "a_honest": 0.09240454914703494
+    },
+    {
+      "partition": "concentrated",
+      "defense": "FedAvg",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 4,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.1
+    },
+    {
+      "partition": "concentrated",
+      "defense": "FedAvg",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 4,
+      "beta": 1.0,
+      "n_malicious": 4,
+      "malicious_ids": [
+        1,
+        9,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.8431372549019608,
+      "DR": 0.6595744680851063,
+      "FAR": 0.0,
+      "ASR": 0.3191489361702128,
+      "recall_per_class": [
+        1.0,
+        0.9787234042553191,
+        1.0,
+        0.0
+      ],
+      "a_malicious": 0.11149471974004874,
+      "a_honest": 0.09233685350663418
+    },
+    {
+      "partition": "concentrated",
+      "defense": "AutoGM",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 2,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 0.8464052287581699,
+      "DR": 0.6666666666666666,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.09999999821186066
+    },
+    {
+      "partition": "concentrated",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 2,
+      "beta": 1.0,
+      "n_malicious": 2,
+      "malicious_ids": [
+        8,
+        5
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.1992241621017456,
+      "a_honest": 0.07519395556300879
+    },
+    {
+      "partition": "concentrated",
+      "defense": "AutoGM",
+      "scenario": "S0",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 4,
+      "beta": 0.0,
+      "n_malicious": 0,
+      "malicious_ids": [],
+      "model_mode": null,
+      "model_tau": 1.0,
+      "acc": 1.0,
+      "DR": 1.0,
+      "FAR": 0.0,
+      "ASR": 0.0,
+      "recall_per_class": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "a_malicious": null,
+      "a_honest": 0.09999999739229679
+    },
+    {
+      "partition": "concentrated",
+      "defense": "AutoGM",
+      "scenario": "S3",
+      "seed": 0,
+      "alpha": null,
+      "fault_owners": 4,
+      "beta": 1.0,
+      "n_malicious": 4,
+      "malicious_ids": [
+        1,
+        9,
+        8,
+        6
+      ],
+      "model_mode": "constrained",
+      "model_tau": 1.0,
+      "acc": 0.5392156862745098,
+      "DR": 0.0,
+      "FAR": 0.0,
+      "ASR": 1.0,
+      "recall_per_class": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a_malicious": 0.12613871023058892,
+      "a_honest": 0.08257419529060522
+    }
+  ]
+}

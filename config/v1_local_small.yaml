@@ -1,0 +1,32 @@
+# v1_local_small — Setup pequeño YA EJECUTADO (local, CPU). NO se descarta: queda reportado.
+# Reproduce el grid reducido de la sesión 2026-06-25 (resultado: AutoGM aguanta el sigiloso en
+# minoría; supresión de clase rara con 2 dueños). Útil como línea base de escala pequeña.
+name: v1_local_small
+description: >
+  CWRU sin solape (1537 ventanas), 10 clientes, 20 rondas. Escala pequeña: limitada por el tamaño
+  del dataset. Sirve de referencia para contrastar contra v2_scaled.
+
+data:
+  window: 2048
+  stride: 2048        # sin solape
+
+fl:
+  n_clients: 10
+  rounds: 20
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+
+grid:
+  seeds: [0]
+  alphas: [0.5, 0.3]
+  betas: [0.2, 0.4]
+  defenses: [FedAvg, AutoGM]
+  fault_owners: [2, 4]
+  target_class: 3      # Ball (clase rara objetivo en la partición concentrada)
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0     # amplificación del update sigiloso antes del clip
+  model_tau: 1.0       # presupuesto de norma = 1x la norma honesta mediana

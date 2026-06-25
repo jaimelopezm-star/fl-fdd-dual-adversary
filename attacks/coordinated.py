@@ -22,10 +22,22 @@ def build_scenario(name, client_data, malicious_ids, *, seed: int = 0,
                    fdi_gamma: float = 1.0, fdi_mode: str = "mask",
                    flip_frac: float = 1.0,
                    model_mode: str = "gaussian", model_sigma: float = 0.5,
-                   model_scale: float = 1.0):
-    """Construye el escenario `name`. Devuelve (client_data, model_attack_fn|None)."""
+                   model_scale: float = 1.0, model_boost: float = 1.0, model_tau: float = 1.0):
+    """Construye el escenario `name`. Devuelve (client_data, model_attack_fn|None).
+
+    `model_mode`:
+      - 'gaussian'/'scale'/'sign' : Adv2 OVERT (baseline F3, detectable por AutoGM).
+      - 'constrained'             : Adv2 SIGILOSO (F4), usa model_boost/model_tau.
+      - None                      : S3 'puro masking' (sin poison de modelo) — aísla el efecto de Adv1.
+    """
     cd = [(X.copy(), y.copy()) for X, y in client_data]
     atk = None
+
+    def _poison():
+        if model_mode is None:
+            return None
+        return make_model_poison(mode=model_mode, sigma=model_sigma, scale=model_scale,
+                                 boost=model_boost, tau=model_tau)
 
     if name == "S0":
         pass
@@ -33,10 +45,10 @@ def build_scenario(name, client_data, malicious_ids, *, seed: int = 0,
         cd = apply_fdi(cd, malicious_ids, gamma=fdi_gamma, mode=fdi_mode, seed=seed)
     elif name == "S2":
         cd = apply_label_flip(cd, malicious_ids, frac=flip_frac, seed=seed)
-        atk = make_model_poison(mode=model_mode, sigma=model_sigma, scale=model_scale)
+        atk = _poison()
     elif name == "S3":
         cd = apply_fdi(cd, malicious_ids, gamma=fdi_gamma, mode=fdi_mode, seed=seed)
-        atk = make_model_poison(mode=model_mode, sigma=model_sigma, scale=model_scale)
+        atk = _poison()
     else:
         raise ValueError(f"escenario desconocido: {name}")
 

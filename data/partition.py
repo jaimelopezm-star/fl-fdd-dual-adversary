@@ -47,6 +47,41 @@ def dirichlet_partition(y, n_clients: int, alpha: float, seed: int = 0,
     return [np.array(sorted(c), dtype=np.int64) for c in client_idx]
 
 
+def concentrated_partition(y, n_clients: int, fault_owners: int = 2, seed: int = 0):
+    """Partición CONCENTRADA: cada clase de FALLA vive en pocos clientes (límite non-IID extremo
+    controlado, más realista que Dirichlet para 'cada planta tiene sus propios modos de falla').
+
+    - La clase Normal (0) se reparte entre TODOS los clientes (todos ven operación sana).
+    - Cada clase de falla c>0 se asigna a `fault_owners` clientes elegidos al azar (sus "dueños").
+
+    Devuelve (client_idx, owners):
+      client_idx : lista de n_clients arrays de índices sobre y.
+      owners     : dict {clase_falla: [ids de clientes dueños]} — útil para coordinar el ataque
+                   (el actor compromete a los dueños de una clase → enmascararla la borra del global)
+                   y para diagnosticar la supresión de clase rara de la agregación robusta.
+    """
+    y = np.asarray(y)
+    n_classes = int(y.max()) + 1
+    rng = np.random.default_rng(seed)
+    client_idx = [[] for _ in range(n_clients)]
+
+    normal = np.where(y == 0)[0]
+    rng.shuffle(normal)
+    for i, part in enumerate(np.array_split(normal, n_clients)):
+        client_idx[i].extend(part.tolist())
+
+    owners = {}
+    for c in range(1, n_classes):
+        own = rng.choice(n_clients, size=min(fault_owners, n_clients), replace=False)
+        owners[int(c)] = [int(o) for o in own]
+        idx_c = np.where(y == c)[0]
+        rng.shuffle(idx_c)
+        for j, part in enumerate(np.array_split(idx_c, len(own))):
+            client_idx[own[j]].extend(part.tolist())
+
+    return [np.array(sorted(c), dtype=np.int64) for c in client_idx], owners
+
+
 def partition_report(client_idx, y, n_classes=None):
     """Devuelve una matriz (n_clients x n_classes) con el conteo de cada clase por cliente."""
     y = np.asarray(y)

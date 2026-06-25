@@ -56,17 +56,23 @@ def _norm_weights(weights):
 # --------------------------------------------------------------------------------------------------
 # AutoGM — mediana geométrica auto-ponderada (Li 2021)
 # --------------------------------------------------------------------------------------------------
-def autogm_aggregate(state_dicts, weights, iters: int = 100, eps: float = 1e-5):
+def autogm_aggregate(state_dicts, weights, iters: int = 100, eps: float = 1e-5,
+                     return_weights: bool = False):
     """Mediana geométrica ponderada vía Weiszfeld.
 
     Minimiza  sum_i  w_i * ||z - v_i||  sobre z. El reponderado a_i = w_i / ||z - v_i|| es la
     parte "auto-weighted": las actualizaciones lejanas (posibles envenenadas) pesan menos.
+
+    Si `return_weights=True` devuelve (state_dict, a) donde `a` es el peso efectivo normalizado
+    por cliente en la última iteración — diagnóstico de evasión: a_malicioso ≈ a_honesto significa
+    que la defensa NO distingue al adversario.
     """
     keys = _float_keys(state_dicts[0])
     V = torch.stack([_flatten(sd, keys) for sd in state_dicts])   # (m, d)
     w = _norm_weights(weights)
 
     z = (w[:, None] * V).sum(dim=0)        # init: media ponderada (FedAvg)
+    a = w.clone()
     for _ in range(iters):
         dist = torch.norm(V - z, dim=1) + 1e-8
         a = w / dist                        # peso auto-ajustado (IRLS)
@@ -75,18 +81,23 @@ def autogm_aggregate(state_dicts, weights, iters: int = 100, eps: float = 1e-5):
             z = z_new
             break
         z = z_new
-    return _unflatten(z, state_dicts[0], keys)
+    out = _unflatten(z, state_dicts[0], keys)
+    if return_weights:
+        return out, (a / a.sum()).tolist()
+    return out
 
 
 # --------------------------------------------------------------------------------------------------
 # D-WFA — Dynamic Weighted Federated Averaging (Chen 2022)
 # --------------------------------------------------------------------------------------------------
-def dwfa_aggregate(state_dicts, weights, temp: float = 1.0):
+def dwfa_aggregate(state_dicts, weights, temp: float = 1.0, return_weights: bool = False):
     """Promedio con ponderación dinámica por divergencia respecto al centro.
 
     Proxy de la ponderación dinámica de D-WFA: w_i ∝ (n_i) · softmax(-d_i / mediana(d)), donde d_i es
     la distancia de la actualización del cliente i al centro ponderado. Maneja heterogeneidad pero
     NO está diseñado contra adversarios coordinados (baseline de contraste).
+
+    Con `return_weights=True` devuelve (state_dict, w) — peso efectivo normalizado por cliente.
     """
     keys = _float_keys(state_dicts[0])
     V = torch.stack([_flatten(sd, keys) for sd in state_dicts])   # (m, d)
@@ -100,7 +111,10 @@ def dwfa_aggregate(state_dicts, weights, temp: float = 1.0):
     w = w / w.sum()
 
     z = (w[:, None] * V).sum(dim=0)
-    return _unflatten(z, state_dicts[0], keys)
+    out = _unflatten(z, state_dicts[0], keys)
+    if return_weights:
+        return out, w.tolist()
+    return out
 
 
 # Registro nombre -> función, para elegir la defensa desde config/notebook.
