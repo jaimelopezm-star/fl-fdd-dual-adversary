@@ -1,0 +1,39 @@
+# v3_seeds — CONFIRMACIÓN del hallazgo titular de v2 con 5 semillas (robustez estadística).
+# Misma escala que v2 (stride 512, 30 clientes, 40 rondas) para que sea comparable, pero ENFOCADO:
+# solo S0 (limpio) y S3 (dual coordinado) en modo overt y sigiloso, en el régimen clave α∈{0.3,0.5}
+# y β∈{0.3,0.4}. Objetivo: confirmar que a α=0.3,β=0.4 el sigiloso rompe AutoGM/D-WFA (ASR alto) y el
+# overt es filtrado (ASR≈0), con barras de error sobre 5 semillas; y que a α=0.5 AutoGM aguanta.
+name: v3_seeds
+description: >
+  Confirmación con 5 semillas del quiebre de la agregación robusta por el ataque sigiloso a α=0.3,β=0.4
+  (vs overt filtrado y vs FedAvg sin daño). Escala v2 (30 clientes, 40 rondas, solape). Enfocado en
+  S0+S3 para correr rápido (~150 celdas).
+
+data:
+  window: 2048
+  stride: 512
+
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+
+grid:
+  seeds: [0, 1, 2, 3, 4]
+  alphas: [0.3, 0.5]
+  betas: [0.3, 0.4]
+  defenses: [FedAvg, AutoGM, D-WFA]
+  scenarios: [S0, S3]          # enfocado: limpio + dual coordinado
+  modes: [gaussian, constrained]   # overt vs sigiloso
+  fault_owners: []             # sin eje concentrado (clase rara ya caracterizada en v2)
+  target_class: 3
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+
+# ~150 celdas. Local con jobs=6 ≈ 1.5 h. Para acortar: alphas [0.3] o betas [0.4].

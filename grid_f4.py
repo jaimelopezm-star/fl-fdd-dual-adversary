@@ -49,6 +49,9 @@ def load_config(path):
     g.setdefault("seeds", [0]); g.setdefault("alphas", [0.5, 0.3]); g.setdefault("betas", [0.2, 0.4])
     g.setdefault("defenses", ["FedAvg", "AutoGM"]); g.setdefault("fault_owners", [2, 4])
     g.setdefault("target_class", 3)
+    # escenarios/modos a incluir (permite grids enfocados, p.ej. v3 = solo S0+S3 overt+sigiloso)
+    g.setdefault("scenarios", ["S0", "S1", "S2", "S3"])
+    g.setdefault("modes", ["gaussian", "constrained"])
     cfg.setdefault("attack", {}); cfg["attack"].setdefault("model_boost", 4.0); cfg["attack"].setdefault("model_tau", 1.0)
     cfg["attack"].setdefault("model_sigma", 0.5)
     return cfg
@@ -117,19 +120,26 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
 
 
 def build_grid(cfg):
-    """Genera la lista de especificaciones (kwargs de run_cell) a partir de la config."""
+    """Genera la lista de especificaciones (kwargs de run_cell) a partir de la config.
+    Respeta grid.scenarios y grid.modes (para grids enfocados) y omite el eje concentrado si
+    grid.fault_owners está vacío."""
     g = cfg["grid"]
+    scen_on = set(g["scenarios"]); modes = g["modes"]
     specs = []
     for seed in g["seeds"]:
         for defense in g["defenses"]:
             for alpha in g["alphas"]:
-                specs.append(dict(partition="dirichlet", defense=defense, scenario="S0",
-                                  seed=seed, alpha=alpha, beta=0.0, model_mode=None))
+                if "S0" in scen_on:
+                    specs.append(dict(partition="dirichlet", defense=defense, scenario="S0",
+                                      seed=seed, alpha=alpha, beta=0.0, model_mode=None))
                 for beta in g["betas"]:
-                    specs.append(dict(partition="dirichlet", defense=defense, scenario="S1",
-                                      seed=seed, alpha=alpha, beta=beta, model_mode=None))
+                    if "S1" in scen_on:
+                        specs.append(dict(partition="dirichlet", defense=defense, scenario="S1",
+                                          seed=seed, alpha=alpha, beta=beta, model_mode=None))
                     for scen in ("S2", "S3"):
-                        for mode in ("gaussian", "constrained"):
+                        if scen not in scen_on:
+                            continue
+                        for mode in modes:
                             specs.append(dict(partition="dirichlet", defense=defense, scenario=scen,
                                               seed=seed, alpha=alpha, beta=beta, model_mode=mode))
     for seed in g["seeds"]:
