@@ -88,6 +88,77 @@ def autogm_aggregate(state_dicts, weights, iters: int = 100, eps: float = 1e-5,
 
 
 # --------------------------------------------------------------------------------------------------
+# AutoGM FIEL — mediana geométrica auto-ponderada con recorte duro de outliers (Li 2023, Teorema 1)
+# --------------------------------------------------------------------------------------------------
+def autogm_full_aggregate(state_dicts, weights, lamb2: float = 1.0, outer_iters: int = 10,
+                          gm_iters: int = 10, eps: float = 1e-5, return_weights: bool = False):
+    """AutoGM fiel a Li 2023 (IEEE TII): optimización alternada (smoothed Weiszfeld + Teorema 1).
+
+    A diferencia de `autogm_aggregate` (GM suavizada / IRLS, que solo re-pondera y NUNCA excluye a nadie),
+    esta versión implementa el AutoGM real:
+
+        min_{z,α}  Σ_i α_i·||z − v_i||  +  (λ/2)·||α||²,     λ = lamb2 · K   (K = nº de clientes)
+
+    resuelto alternando:
+      - subproblema en z: mediana geométrica ponderada dada α (Weiszfeld suavizado);
+      - subproblema en α: solución cerrada del Teorema 1 que ordena por distancia, halla el umbral de
+        skewness η* y fija  α_i = max(η* − d_i, 0)/λ  → los clientes lejanos reciben α_i = 0 (EXCLUSIÓN
+        dura del outlier). Con λ = K es la configuración robusta reportada (30% model / 50% data poisoning).
+
+    Referencia: replicacion_autogm/AutoGM/trainers/autogmfl.py::aggregate_autogm (líneas 62-100). La regla
+    robusta del paper NO pondera por nº de muestras; `weights` solo siembra el centro inicial. Firma
+    compatible con FedAvg/AutoGM: si `return_weights=True` devuelve (state_dict, pesos_efectivos_normalizados),
+    diagnóstico de evasión (un a_malicioso ≈ 0 significa que la defensa SÍ excluyó al adversario).
+    """
+    keys = _float_keys(state_dicts[0])
+    V = torch.stack([_flatten(sd, keys) for sd in state_dicts])   # (m, d)
+    m = V.shape[0]
+    lamb = lamb2 * m
+    w0 = _norm_weights(weights)
+
+    alpha = torch.full((m,), 1.0 / m)          # init uniforme (como el código oficial)
+    z = (w0[:, None] * V).sum(dim=0)           # centro inicial = media ponderada (FedAvg)
+
+    def _weiszfeld(z):
+        for _ in range(gm_iters):
+            dist = torch.norm(V - z, dim=1).clamp_min(eps)
+            wq = alpha / dist
+            s = wq.sum()
+            if s <= 0:
+                break
+            wq = wq / s
+            z_new = (wq[:, None] * V).sum(dim=0)
+            if torch.norm(z_new - z) < eps:
+                return z_new
+            z = z_new
+        return z
+
+    for _ in range(outer_iters):
+        # subproblema en z: GM ponderada dada α
+        z = _weiszfeld(z)
+        # subproblema en α: recorte duro por umbral η* (Teorema 1)
+        d = torch.norm(V - z, dim=1)
+        d_sorted, _ = torch.sort(d)
+        csum = torch.cumsum(d_sorted, dim=0)
+        eta_optimal = d_sorted[0] + lamb            # p=0 siempre pasa (eta − d0 = lamb > 0)
+        for p in range(m):
+            eta = (csum[p] + lamb) / (p + 1)
+            if (eta - d_sorted[p]) < 0:
+                break
+            eta_optimal = eta
+        alpha = torch.clamp(eta_optimal - d, min=0.0) / lamb    # outliers (d_i > η*) → 0
+
+    z = _weiszfeld(z)                          # median final consistente con la α final
+    out = _unflatten(z, state_dicts[0], keys)
+    if return_weights:
+        dist = torch.norm(V - z, dim=1).clamp_min(eps)
+        wq = alpha / dist
+        wq = wq / wq.sum() if float(wq.sum()) > 0 else w0
+        return out, wq.tolist()
+    return out
+
+
+# --------------------------------------------------------------------------------------------------
 # D-WFA — Dynamic Weighted Federated Averaging (Chen 2022)
 # --------------------------------------------------------------------------------------------------
 def dwfa_aggregate(state_dicts, weights, temp: float = 1.0, return_weights: bool = False):
@@ -119,6 +190,7 @@ def dwfa_aggregate(state_dicts, weights, temp: float = 1.0, return_weights: bool
 
 # Registro nombre -> función, para elegir la defensa desde config/notebook.
 AGGREGATORS = {
-    "autogm": autogm_aggregate,
+    "autogm": autogm_aggregate,             # GM suavizada (IRLS) — legacy, reproduce v1-v3
+    "autogm_full": autogm_full_aggregate,   # AutoGM fiel (λ + recorte η* del Teorema 1)
     "dwfa": dwfa_aggregate,
 }

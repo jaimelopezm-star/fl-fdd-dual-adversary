@@ -24,13 +24,16 @@ from data.load_cwru import load_dataset, FILE_MAP
 from data.partition import dirichlet_partition, concentrated_partition
 from models.cnn1d import build_model
 from federated.fedavg import run_fl, evaluate, make_loader, fedavg_aggregate
-from defenses.aggregators import autogm_aggregate, dwfa_aggregate
+from defenses.aggregators import autogm_aggregate, autogm_full_aggregate, dwfa_aggregate
 from attacks.coordinated import build_scenario
 from metrics.detection import detection_metrics
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(HERE, "results")
-AGGS = {"FedAvg": fedavg_aggregate, "AutoGM": autogm_aggregate, "D-WFA": dwfa_aggregate}
+# "AutoGM"      = GM suavizada (IRLS), legacy que reproduce v1-v3.
+# "AutoGM-full" = AutoGM fiel a Li 2023 (regularización λ + recorte η* que excluye outliers).
+AGGS = {"FedAvg": fedavg_aggregate, "AutoGM": autogm_aggregate,
+        "AutoGM-full": autogm_full_aggregate, "D-WFA": dwfa_aggregate}
 
 _CACHE = {}
 
