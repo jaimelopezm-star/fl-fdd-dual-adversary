@@ -24,6 +24,7 @@ from data.load_cwru import load_dataset, FILE_MAP
 from data.partition import dirichlet_partition, concentrated_partition
 from models.cnn1d import build_model
 from federated.fedavg import run_fl, evaluate, make_loader, fedavg_aggregate
+from federated.pfl import run_fl_pfl
 from defenses.aggregators import autogm_aggregate, autogm_full_aggregate, dwfa_aggregate
 from attacks.coordinated import build_scenario
 from metrics.detection import detection_metrics
@@ -48,6 +49,7 @@ def load_config(path):
     cfg.setdefault("data", {}); cfg["data"].setdefault("window", 2048); cfg["data"].setdefault("stride", 2048)
     cfg.setdefault("fl", {}); cfg["fl"].setdefault("n_clients", 10); cfg["fl"].setdefault("rounds", 20)
     cfg["fl"].setdefault("local_epochs", 2); cfg["fl"].setdefault("lr", 1e-3); cfg["fl"].setdefault("batch_size", 64)
+    cfg["fl"].setdefault("theta", 0.1)   # regularizacion Ditto para la defensa AutoGM-PFL (0 = local puro)
     g = cfg.setdefault("grid", {})
     g.setdefault("seeds", [0]); g.setdefault("alphas", [0.5, 0.3]); g.setdefault("betas", [0.2, 0.4])
     g.setdefault("defenses", ["FedAvg", "AutoGM"]); g.setdefault("fault_owners", [2, 4])
@@ -106,12 +108,29 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
     cd, atk = build_scenario(scenario, client_data, mal, seed=seed, fdi_mode="mask",
                              model_mode=model_mode, model_sigma=at["model_sigma"],
                              model_boost=at["model_boost"], model_tau=at["model_tau"])
-    model, hist = run_fl(model_fn, cd, (Xte, yte), rounds=fl["rounds"], local_epochs=fl["local_epochs"],
-                         lr=fl["lr"], batch_size=fl["batch_size"], aggregate=AGGS[defense],
-                         malicious_ids=mal, model_attack_fn=atk, device=device, seed=seed, verbose=False)
-    ev = evaluate(model, make_loader(Xte, yte, shuffle=False), device, n_classes=4)
-    met = detection_metrics(ev["cm"])
-    am, ah = _evasion(hist)
+
+    if defense == "AutoGM-PFL":
+        # Variante personalizada (Ditto theta) sobre agregacion robusta AutoGM-full.
+        # ASR/DR/FAR se miden sobre el ENSEMBLE PERSONALIZADO (modelos v_k por cliente); la evasion
+        # (a_mal/a_hon) sobre la agregacion robusta del global. Ver nota de semantica en federated/pfl.py.
+        _, _, hist = run_fl_pfl(model_fn, cd, (Xte, yte), rounds=fl["rounds"],
+                                local_epochs=fl["local_epochs"], lr=fl["lr"],
+                                batch_size=fl["batch_size"], aggregate=autogm_full_aggregate,
+                                theta=fl["theta"], malicious_ids=mal, model_attack_fn=atk,
+                                device=device, seed=seed, verbose=False)
+        cm = np.asarray(hist[-1]["cm_personalized"])
+        met = detection_metrics(cm)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            recall = np.divide(np.diag(cm), cm.sum(axis=1), out=np.zeros(4), where=cm.sum(axis=1) > 0)
+        ev = {"recall": recall}
+        am, ah = _evasion(hist)
+    else:
+        model, hist = run_fl(model_fn, cd, (Xte, yte), rounds=fl["rounds"], local_epochs=fl["local_epochs"],
+                             lr=fl["lr"], batch_size=fl["batch_size"], aggregate=AGGS[defense],
+                             malicious_ids=mal, model_attack_fn=atk, device=device, seed=seed, verbose=False)
+        ev = evaluate(model, make_loader(Xte, yte, shuffle=False), device, n_classes=4)
+        met = detection_metrics(ev["cm"])
+        am, ah = _evasion(hist)
     return {
         "partition": partition, "defense": defense, "scenario": scenario, "seed": seed,
         "alpha": alpha, "fault_owners": fault_owners if partition == "concentrated" else None,
