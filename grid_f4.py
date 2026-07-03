@@ -59,6 +59,8 @@ def load_config(path):
     g.setdefault("modes", ["gaussian", "constrained"])
     cfg.setdefault("attack", {}); cfg["attack"].setdefault("model_boost", 4.0); cfg["attack"].setdefault("model_tau", 1.0)
     cfg["attack"].setdefault("model_sigma", 0.5)
+    cfg["attack"].setdefault("sensor_frac", 0.3)   # fraccion de clientes honestos cuyo sensor compromete Adv1 (S4)
+    cfg["attack"].setdefault("sensor_gamma", 1.0)  # fraccion de ventanas de la clase objetivo enmascaradas (S4)
     return cfg
 
 
@@ -105,9 +107,26 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
         mal = list(owners.get(target, [])) if beta > 0 else []
 
     client_data = [(Xtr[i], ytr[i]) for i in cidx]
+
+    # S4 (sensor compartido): el sensor comprometido alimenta a clientes VICTIMA honestos — los honestos
+    # que MAS muestras de la clase objetivo tienen (los que de otro modo la detectarian). Enmascara solo
+    # esa clase en su entrenamiento local -> rompe la personalizacion (PFL), que asume honestos limpios.
+    victim_ids = None
+    sensor_only = None
+    if scenario == "S4":
+        mal_set = set(mal)
+        tcount = [int(np.sum(yc == target)) for (_, yc) in client_data]
+        honest = [c for c in range(len(client_data)) if c not in mal_set]
+        honest.sort(key=lambda c: tcount[c], reverse=True)
+        n_v = max(1, int(round(at["sensor_frac"] * len(client_data))))
+        victim_ids = honest[:n_v]
+        sensor_only = target
+
     cd, atk = build_scenario(scenario, client_data, mal, seed=seed, fdi_mode="mask",
+                             fdi_gamma=at["sensor_gamma"] if scenario == "S4" else 1.0,
                              model_mode=model_mode, model_sigma=at["model_sigma"],
-                             model_boost=at["model_boost"], model_tau=at["model_tau"])
+                             model_boost=at["model_boost"], model_tau=at["model_tau"],
+                             victim_ids=victim_ids, sensor_only_class=sensor_only)
 
     if defense == "AutoGM-PFL":
         # Variante personalizada (Ditto theta) sobre agregacion robusta AutoGM-full.
@@ -135,6 +154,8 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
         "partition": partition, "defense": defense, "scenario": scenario, "seed": seed,
         "alpha": alpha, "fault_owners": fault_owners if partition == "concentrated" else None,
         "beta": beta, "n_malicious": len(mal), "malicious_ids": mal, "model_mode": model_mode,
+        "n_victims": (len(victim_ids) if victim_ids is not None else 0),
+        "victim_ids": victim_ids if victim_ids is not None else [],
         "acc": met["acc"], "DR": met["DR"], "FAR": met["FAR"], "ASR": met["ASR"],
         "recall_per_class": [float(r) for r in ev["recall"]],
         "a_malicious": am, "a_honest": ah,
@@ -163,6 +184,13 @@ def build_grid(cfg):
                             continue
                         for mode in modes:
                             specs.append(dict(partition="dirichlet", defense=defense, scenario=scen,
+                                              seed=seed, alpha=alpha, beta=beta, model_mode=mode))
+                    if "S4" in scen_on:
+                        # sensor-solo (aisla Adv1 sobre honestos) + dual completo (Adv1 sensor + Adv2 modelo)
+                        specs.append(dict(partition="dirichlet", defense=defense, scenario="S4",
+                                          seed=seed, alpha=alpha, beta=beta, model_mode=None))
+                        for mode in modes:
+                            specs.append(dict(partition="dirichlet", defense=defense, scenario="S4",
                                               seed=seed, alpha=alpha, beta=beta, model_mode=mode))
     for seed in g["seeds"]:
         for defense in g["defenses"]:

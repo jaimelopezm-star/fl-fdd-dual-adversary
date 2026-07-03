@@ -9,8 +9,15 @@ coordinated.py — Composición de escenarios de amenaza (incluye el DUAL COORDI
   'S3' : DUAL COORDINADO — el MISMO actor compromete sensor (Adv1 FDI) y cliente (Adv2 modelo).
          La señal enmascarada por Adv1 hace que el update no se vea anómalo, mientras Adv2 empuja
          el modelo global -> la coordinación amplifica el daño y evade la defensa del servidor.
+         (Adv1 enmascara el sensor de los PROPIOS nodos maliciosos -> auto-ocultamiento.)
+  'S4' : DUAL con SENSOR COMPARTIDO — variante que ataca la PERSONALIZACIÓN (PFL). Aquí el sensor
+         comprometido (Adv1) NO alimenta a los nodos maliciosos, sino a clientes VÍCTIMA honestos
+         (`victim_ids`): enmascara la clase objetivo en SU entrenamiento local, de modo que su modelo
+         personalizado v_k nunca aprende la falla. Adv2 (modelo) sigue sobre `malicious_ids` (opcional).
+         Rompe la premisa de PFL (que los honestos entrenan sobre datos limpios) — el update sigiloso
+         solo esquivaba la agregación robusta del GLOBAL; el sensor compartido llega a lo LOCAL.
 
-Todos usan el mismo conjunto `malicious_ids` (mismo actor controla ambas capas en S3).
+S1/S2/S3 usan el mismo conjunto `malicious_ids`. En S4 el sensor golpea a `victim_ids` (honestos).
 """
 from __future__ import annotations
 from .adv1_fdi import apply_fdi
@@ -22,7 +29,8 @@ def build_scenario(name, client_data, malicious_ids, *, seed: int = 0,
                    fdi_gamma: float = 1.0, fdi_mode: str = "mask",
                    flip_frac: float = 1.0,
                    model_mode: str = "gaussian", model_sigma: float = 0.5,
-                   model_scale: float = 1.0, model_boost: float = 1.0, model_tau: float = 1.0):
+                   model_scale: float = 1.0, model_boost: float = 1.0, model_tau: float = 1.0,
+                   victim_ids=None, sensor_only_class: int | None = None):
     """Construye el escenario `name`. Devuelve (client_data, model_attack_fn|None).
 
     `model_mode`:
@@ -49,6 +57,13 @@ def build_scenario(name, client_data, malicious_ids, *, seed: int = 0,
     elif name == "S3":
         cd = apply_fdi(cd, malicious_ids, gamma=fdi_gamma, mode=fdi_mode, seed=seed)
         atk = _poison()
+    elif name == "S4":
+        # Sensor compartido: Adv1 corrompe la falla objetivo en los clientes VICTIMA honestos ->
+        # su v_k personalizado no la aprende (rompe PFL). Adv2 (modelo) opcional sobre los maliciosos.
+        vids = victim_ids if victim_ids is not None else malicious_ids
+        cd = apply_fdi(cd, vids, gamma=fdi_gamma, mode=fdi_mode,
+                       only_class=sensor_only_class, seed=seed)
+        atk = _poison()
     else:
         raise ValueError(f"escenario desconocido: {name}")
 
@@ -59,5 +74,6 @@ SCENARIOS = {
     "S0": "limpio",
     "S1": "solo Adv1 (FDI sensor)",
     "S2": "solo Adv2 (label-flip + modelo)",
-    "S3": "dual coordinado (Adv1+Adv2)",
+    "S3": "dual coordinado (Adv1+Adv2, auto-enmascarado)",
+    "S4": "dual con sensor compartido (Adv1 en victimas honestas -> rompe PFL)",
 }

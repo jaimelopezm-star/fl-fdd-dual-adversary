@@ -1,0 +1,51 @@
+# v5_pfl_sensor — ¿ROMPE EL SENSOR COMPARTIDO (S4) A LA PERSONALIZACION (AutoGM-PFL)?
+# Motivacion: en v4, PFL mitigo el dual S3 (0/10) porque S3 solo envenena el modelo GLOBAL (via Adv2) y
+#   auto-enmascara al atacante; los honestos entrenan su v_k sobre datos LIMPIOS -> PFL inmune. S4 lleva
+#   el sensor comprometido (Adv1) a clientes VICTIMA honestos: enmascara la clase objetivo en SU
+#   entrenamiento local, que es la unica cosa de la que PFL depende. Hipotesis: S4 rompe PFL donde S3 no.
+# Diseño de decomposicion (lo que hace defendible la afirmacion del gap):
+#   - S3 constrained : dual "clasico" (control) -> PFL deberia aguantar (replica v4).
+#   - S4 model_mode=None : SENSOR SOLO (Adv1 en honestos, sin Adv2) -> aisla el efecto del dispositivo.
+#   - S4 constrained : DUAL COMPLETO (Adv1 sensor en honestos + Adv2 modelo) -> el ataque fuerte.
+#   Si S4 sube ASR bajo PFL y S3 no, queda DEMOSTRADO (no argumentado) que la mitad-dispositivo es la que
+#   quiebra la personalizacion -> reafirma el gap contra el baseline mas fuerte y justifica el Mecanismo 1.
+# CAVEAT: mismo split por ventanas con solape (stride 512) que v2/v3/v4 -> posible fuga optimista; la
+#   comparacion ENTRE defensas/escenarios es valida (comparten split y semillas). Cerrar con split bloqueado.
+name: v5_pfl_sensor
+description: >
+  ¿El sensor compartido (S4, Adv1 sobre clientes honestos) rompe AutoGM-PFL donde el dual clasico (S3) no?
+  Decomposicion sensor-solo vs dual completo, 5 defensas, alpha{0.3,0.5} x beta{0.4}, 10 semillas. Escala v2/v4.
+
+data:
+  window: 2048
+  stride: 512
+
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+  theta: 0.1          # regularizacion Ditto para AutoGM-PFL
+
+grid:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  alphas: [0.3, 0.5]
+  betas: [0.4]                       # regimen titular donde el dual mordia
+  defenses: [FedAvg, AutoGM, AutoGM-full, AutoGM-PFL, D-WFA]
+  scenarios: [S0, S3, S4]            # limpio + dual clasico (control) + dual con sensor compartido
+  modes: [constrained]               # sigiloso (el overt ya esta caracterizado en v4)
+  fault_owners: []                   # sin eje concentrado
+  target_class: 3
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+  sensor_frac: 0.3                   # 30% de clientes honestos (los que mas clase objetivo tienen) con sensor comprometido
+  sensor_gamma: 1.0                  # enmascara el 100% de las ventanas de la clase objetivo en esos clientes
+
+# Celdas: seeds(10) x defensas(5) x alphas(2) x [ S0(1) + beta0.4( S3:1 + S4:None + S4:constrained = 3 ) ]
+#        = 10*5*2*4 = 400 celdas. En RTX 4090 ~2h; en RTX 4000 Ada ~4h. Correr:
+#   py -3.12 grid_f4.py --config config/v5_pfl_sensor.yaml --device cuda --jobs 8 --resume

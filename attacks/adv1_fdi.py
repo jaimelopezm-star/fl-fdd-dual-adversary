@@ -27,8 +27,12 @@ def _normal_pool(client_data, normal_class):
 
 def apply_fdi(client_data, malicious_ids, gamma: float = 1.0, mode: str = "mask",
               normal_class: int = 0, noise_std: float = 3.0, scale: float = 0.2,
-              seed: int = 0):
-    """Aplica FDI a una fracción `gamma` de las ventanas de cada cliente comprometido."""
+              only_class: int | None = None, seed: int = 0):
+    """Aplica FDI a una fracción `gamma` de las ventanas de cada cliente comprometido.
+
+    `only_class` (solo modo 'mask'): si se da, enmascara ÚNICAMENTE las ventanas de esa clase (falla
+    objetivo) en lugar de todas las clases de falla. Es lo que usa el sensor compartido S4: corromper la
+    señal de la falla objetivo en clientes VÍCTIMA honestos -> su modelo personalizado nunca la aprende."""
     rng = np.random.default_rng(seed)
     malicious_ids = set(malicious_ids)
     pool = _normal_pool(client_data, normal_class) if mode == "mask" else None
@@ -39,7 +43,10 @@ def apply_fdi(client_data, malicious_ids, gamma: float = 1.0, mode: str = "mask"
             continue
         Xc, yc = X.copy(), y.copy()
         if mode == "mask":
-            tgt = np.where(yc != normal_class)[0]            # ventanas de falla
+            if only_class is not None:
+                tgt = np.where(yc == only_class)[0]          # solo la falla objetivo (S4)
+            else:
+                tgt = np.where(yc != normal_class)[0]        # todas las ventanas de falla
             k = int(round(gamma * len(tgt)))
             sel = rng.choice(tgt, size=k, replace=False) if k else np.array([], dtype=int)
             if len(sel) and pool is not None:
