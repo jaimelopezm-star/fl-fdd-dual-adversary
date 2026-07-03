@@ -1,0 +1,45 @@
+# v4_defensas_gpu — COMPARACION DE DEFENSAS en el regimen titular, pensada para GPU (RTX 4090).
+# Objetivo: contrastar, en el mismo split y semillas (comparacion PAREADA), las 5 defensas:
+#   FedAvg (control), AutoGM (GM suavizada / legacy), AutoGM-full (AutoGM FIEL: lambda + recorte eta*),
+#   AutoGM-PFL (personalizada Ditto, non-IID) y D-WFA (proxy de discrepancia).
+# Pregunta clave: ¿el ataque sigiloso 'constrained' (clip a tau*ref_norm) sigue EVADIENDO al AutoGM fiel
+#   (queda bajo eta* -> no lo excluye) o el recorte duro lo filtra? -> decide si v1-v3 se conserva/reencuadra.
+# Escala v2/v3 (stride 512, 30 clientes, 40 rondas) para comparabilidad; 10 semillas para robustez.
+# CAVEAT: mismo protocolo de split por ventanas (posible fuga por solape, igual que v2/v3). La comparacion
+#   ENTRE defensas es valida (todas comparten split); la generalizacion absoluta no (ver evaluacion_del_experimento.md).
+name: v4_defensas_gpu
+description: >
+  Comparacion pareada de 5 defensas (FedAvg, AutoGM suave, AutoGM-full fiel, AutoGM-PFL, D-WFA) en el
+  regimen titular alpha{0.3,0.5} x beta{0.3,0.4}, S0+S3, overt+sigiloso, 10 semillas. Escala v2/v3.
+
+data:
+  window: 2048
+  stride: 512
+
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+  theta: 0.1          # regularizacion Ditto para AutoGM-PFL (0 = local puro; sube -> sigue al global)
+
+grid:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  alphas: [0.3, 0.5]
+  betas: [0.3, 0.4]
+  defenses: [FedAvg, AutoGM, AutoGM-full, AutoGM-PFL, D-WFA]
+  scenarios: [S0, S3]              # limpio + dual coordinado
+  modes: [gaussian, constrained]   # overt vs sigiloso
+  fault_owners: []                 # sin eje concentrado (ya caracterizado en v1/v2)
+  target_class: 3
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+
+# Grid: seeds(10) x defensas(5) x alphas(2) x [S0(1) + betas(2)*modes(2)=4] = 500 celdas.
+# En RTX 4090: correr con --device cuda --jobs 8 (o el que gane el micro-benchmark). Checkpoint JSONL
+# incremental (resume con --resume). Las celdas AutoGM-PFL cuestan ~2x (entrenan modelo global + v_k).

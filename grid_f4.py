@@ -194,10 +194,36 @@ def _run_spec(payload):
     return idx, run_cell(cfg, device=device, **sp)
 
 
-def run_grid(cfg, specs, device="cpu", jobs=1):
+def _cell_key(d):
+    """Identidad canónica de una celda (para checkpoint/resume). Vale tanto para una spec como para un
+    registro ya calculado: usa los mismos campos que definen unívocamente la celda."""
+    partition = d.get("partition")
+    return (partition, d.get("defense"), d.get("scenario"), d.get("seed"),
+            d.get("alpha"), d.get("beta", 0.0),
+            d.get("fault_owners") if partition == "concentrated" else None,
+            d.get("model_mode"))
+
+
+def _append_ckpt(ckpt_path, rec):
+    """Anexa un registro al checkpoint JSONL (una línea por celda) y hace flush — la corrida larga
+    queda protegida: si el proceso muere, los resultados ya calculados sobreviven."""
+    if not ckpt_path:
+        return
+    with open(ckpt_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        f.flush()
+
+
+def run_grid(cfg, specs, device="cpu", jobs=1, ckpt_path=None, done_keys=None):
     """Ejecuta el grid (secuencial si jobs<=1; en paralelo por procesos si jobs>1).
-    Devuelve la lista de registros en ORDEN ESTABLE (independiente del orden de finalización)."""
-    n = len(specs)
+    Devuelve la lista de registros NUEVOS. Si `ckpt_path`, anexa cada celda al JSONL según se completa.
+    Si `done_keys`, omite las celdas ya presentes en el checkpoint (resume)."""
+    done_keys = done_keys or set()
+    pending = [sp for sp in specs if _cell_key(sp) not in done_keys]
+    n = len(pending)
+    skipped = len(specs) - n
+    if skipped:
+        print(f"[grid_f4] resume: {skipped} celdas ya en checkpoint -> se omiten; quedan {n}.", flush=True)
     try:
         from tqdm import tqdm
     except ImportError:
@@ -206,21 +232,23 @@ def run_grid(cfg, specs, device="cpu", jobs=1):
     if jobs and jobs > 1:
         from concurrent.futures import ProcessPoolExecutor, as_completed
         results = [None] * n
-        payloads = [(i, cfg, device, sp) for i, sp in enumerate(specs)]
+        payloads = [(i, cfg, device, sp) for i, sp in enumerate(pending)]
         with ProcessPoolExecutor(max_workers=jobs) as ex:
             futs = [ex.submit(_run_spec, p) for p in payloads]
             done = 0
             for fut in tqdm(as_completed(futs), total=n, desc=f"grid {cfg['name']} x{jobs}", unit="celda"):
                 idx, rec = fut.result()
                 results[idx] = rec
+                _append_ckpt(ckpt_path, rec)
                 done += 1
                 print(_fmt(rec, done, n), flush=True)
         return results
 
     records = []
-    for i, sp in tqdm(list(enumerate(specs, 1)), total=n, desc=f"grid {cfg['name']}", unit="celda"):
+    for i, sp in tqdm(list(enumerate(pending, 1)), total=n, desc=f"grid {cfg['name']}", unit="celda"):
         rec = run_cell(cfg, device=device, **sp)
         records.append(rec)
+        _append_ckpt(ckpt_path, rec)
         print(_fmt(rec, i, n), flush=True)
     return records
 
@@ -232,31 +260,61 @@ def main():
     ap.add_argument("--jobs", type=int, default=1,
                     help="nº de procesos en paralelo (cada celda es independiente; no altera resultados)")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--resume", action="store_true",
+                    help="reanuda: omite celdas ya presentes en el checkpoint JSONL y las conserva")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="si >0, corre solo las primeras N celdas (para benchmark/smoke)")
     args = ap.parse_args()
 
     if args.jobs > 1 and args.device == "cuda":
-        print("[grid_f4] AVISO: --jobs>1 con --device cuda hace que varios procesos compartan la GPU "
-              "(riesgo en GPUs chicas). Para paralelizar conviene --device cpu (modelo diminuto).")
+        print("[grid_f4] NOTA: --jobs>1 con --device cuda -> varios procesos comparten la GPU. En una GPU "
+              "grande (p.ej. RTX 4090 24GB) con modelo diminuto es seguro y mejora el aprovechamiento.")
 
     cfg = load_config(args.config)
     name = cfg["name"]
     os.makedirs(RESULTS, exist_ok=True)
     out = args.out or os.path.join(RESULTS, f"F4_grid__{name}.json")
+    ckpt = out + ".jsonl"                 # checkpoint incremental (una línea por celda)
     specs = build_grid(cfg)
+    if args.limit and args.limit > 0:
+        specs = specs[:args.limit]
+
+    # resume: carga registros ya calculados del checkpoint
+    prior = []
+    done_keys = set()
+    if args.resume and os.path.exists(ckpt):
+        with open(ckpt, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                rec = json.loads(line)
+                prior.append(rec)
+                done_keys.add(_cell_key(rec))
+    elif not args.resume and os.path.exists(ckpt):
+        os.remove(ckpt)                   # corrida limpia: descarta checkpoint viejo
+
     print(f"[grid_f4] config='{name}' -> {len(specs)} celdas | "
           f"win={cfg['data']['window']} stride={cfg['data']['stride']} "
           f"n_clients={cfg['fl']['n_clients']} rounds={cfg['fl']['rounds']} "
-          f"device={args.device} jobs={args.jobs}")
+          f"defenses={cfg['grid']['defenses']} device={args.device} jobs={args.jobs} "
+          f"resume={args.resume}({len(done_keys)} hechas)")
 
     t0 = time.time()
-    records = run_grid(cfg, specs, device=args.device, jobs=args.jobs)
+    new_records = run_grid(cfg, specs, device=args.device, jobs=args.jobs,
+                           ckpt_path=ckpt, done_keys=done_keys)
+
+    # combina prior (resume) + nuevos y reordena según build_grid para salida estable
+    by_key = {_cell_key(r): r for r in prior}
+    by_key.update({_cell_key(r): r for r in new_records})
+    records = [by_key[_cell_key(sp)] for sp in specs if _cell_key(sp) in by_key]
 
     payload = {"config": cfg, "meta": {"n_cells": len(records), "device": args.device, "jobs": args.jobs,
                                        "elapsed_s": round(time.time() - t0, 1)},
                "records": records}
     with open(out, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print(f"[grid_f4] guardado {out}  ({payload['meta']['elapsed_s']}s)")
+    print(f"[grid_f4] guardado {out}  ({payload['meta']['elapsed_s']}s)  checkpoint={ckpt}")
 
 
 if __name__ == "__main__":
