@@ -1,0 +1,49 @@
+# v6_pfl_flip — RELABEL DE SENSOR (flip) vs TODAS las defensas M2: ¿alguna capa de agregacion lo detiene?
+# Reencuadre respaldado por el run rapido: 'flip' (mantiene la senal de la falla, etiqueta -> Normal en
+# victimas honestas) induce deteccion-perdida real (ASR ~0.3), y lo hace por IGUAL contra la agregacion
+# robusta global (AutoGM/full/D-WFA) y la personalizacion (PFL) -> NINGUN M2 filtra un update envenenado
+# pero de apariencia honesta. Es un ataque de integridad de DATOS que la capa de MODELO no ve -> motiva M1.
+# Esta corrida lo fija con 5 defensas x 10 semillas y contrasta S3 (poison de modelo, vence solo al global)
+# vs S4-flip (relabel de sensor, vence a todos).
+# CAVEAT: mismo split por ventanas con solape que v2-v5 (posible fuga optimista); comparacion ENTRE
+#   defensas/escenarios valida (comparten split y semillas). Cerrar con split bloqueado.
+name: v6_pfl_flip
+description: >
+  Relabel de sensor (flip) sobre victimas honestas vs 5 defensas M2. ¿Alguna capa de agregacion (robusta
+  global o personalizada) detiene un update envenenado de apariencia honesta? Contraste S3 vs S4-flip,
+  alpha{0.3,0.5} x beta{0.4}, 10 semillas. Escala v2/v4/v5.
+
+data:
+  window: 2048
+  stride: 512
+
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+  theta: 0.1
+
+grid:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  alphas: [0.3, 0.5]
+  betas: [0.4]
+  defenses: [FedAvg, AutoGM, AutoGM-full, AutoGM-PFL, D-WFA]
+  scenarios: [S0, S3, S4]           # limpio + poison de modelo + relabel de sensor
+  modes: [constrained]
+  fault_owners: []
+  target_class: 3
+
+attack:
+  model_mode_overt: gaussian
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+  sensor_frac: 0.3
+  sensor_gamma: 1.0
+  sensor_mode: flip                 # <-- clave: relabel (v6), no borrado (v5)
+
+# Celdas: seeds(10) x def(5) x alpha(2) x [ S0(1) + beta0.4( S3:1 + S4:None + S4:constrained = 3 ) ] = 400.
+# En RTX 4000 Ada ~2h. Correr:
+#   python3 grid_f4.py --config config/v6_pfl_flip.yaml --device cuda --jobs 8 --resume
