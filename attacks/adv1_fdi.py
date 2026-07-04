@@ -53,6 +53,18 @@ def apply_fdi(client_data, malicious_ids, gamma: float = 1.0, mode: str = "mask"
                 rep = rng.integers(0, len(pool), size=len(sel))
                 Xc[sel] = pool[rep]                           # señal -> Normal
                 yc[sel] = normal_class                        # etiqueta -> Normal
+        elif mode == "flip":
+            # RELABEL (backdoor via sensor): MANTIENE la senal de la falla y cambia SOLO la etiqueta a
+            # Normal. Ensena "esta senal de falla es Normal" -> la victima predice falla->Normal
+            # (DETECCION PERDIDA, ASR alto). Es el instrumento correcto para envenenar victimas honestas
+            # en S4 (a diferencia de 'mask', que borra la senal y solo baja el recall sin subir el ASR).
+            if only_class is not None:
+                tgt = np.where(yc == only_class)[0]
+            else:
+                tgt = np.where(yc != normal_class)[0]
+            k = int(round(gamma * len(tgt)))
+            sel = rng.choice(tgt, size=k, replace=False) if k else np.array([], dtype=int)
+            yc[sel] = normal_class                            # solo la etiqueta -> Normal (senal intacta)
         elif mode in ("noise", "scale"):
             n = len(yc)
             k = int(round(gamma * n))

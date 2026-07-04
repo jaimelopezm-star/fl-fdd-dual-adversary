@@ -60,7 +60,8 @@ def load_config(path):
     cfg.setdefault("attack", {}); cfg["attack"].setdefault("model_boost", 4.0); cfg["attack"].setdefault("model_tau", 1.0)
     cfg["attack"].setdefault("model_sigma", 0.5)
     cfg["attack"].setdefault("sensor_frac", 0.3)   # fraccion de clientes honestos cuyo sensor compromete Adv1 (S4)
-    cfg["attack"].setdefault("sensor_gamma", 1.0)  # fraccion de ventanas de la clase objetivo enmascaradas (S4)
+    cfg["attack"].setdefault("sensor_gamma", 1.0)  # fraccion de ventanas de la clase objetivo afectadas (S4)
+    cfg["attack"].setdefault("sensor_mode", "mask")  # 'mask' (borra senal, v5) o 'flip' (relabel a Normal, v6)
     return cfg
 
 
@@ -122,7 +123,8 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
         victim_ids = honest[:n_v]
         sensor_only = target
 
-    cd, atk = build_scenario(scenario, client_data, mal, seed=seed, fdi_mode="mask",
+    cd, atk = build_scenario(scenario, client_data, mal, seed=seed,
+                             fdi_mode=(at["sensor_mode"] if scenario == "S4" else "mask"),
                              fdi_gamma=at["sensor_gamma"] if scenario == "S4" else 1.0,
                              model_mode=model_mode, model_sigma=at["model_sigma"],
                              model_boost=at["model_boost"], model_tau=at["model_tau"],

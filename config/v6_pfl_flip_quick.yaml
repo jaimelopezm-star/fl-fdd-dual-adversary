@@ -1,0 +1,35 @@
+# v6_pfl_flip_quick — CONFIRMACION BARATA del modo 'flip': ¿el sensor con relabel rompe PFL?
+# En v5 el modo 'mask' (borra la senal) no subio el ASR. 'flip' mantiene la senal de la falla y pone
+# etiqueta Normal en las victimas honestas -> deberia ensenar falla->Normal (ASR alto) en su v_k, mientras
+# el modelo global (AutoGM-full) lo diluye. Barato: 2 defensas, alpha 0.3, 3 semillas, solo S0+S4.
+name: v6_pfl_flip_quick
+description: >
+  Confirmacion barata del modo sensor 'flip' (relabel a Normal en victimas honestas). PFL vs AutoGM-full,
+  alpha 0.3, beta 0.4, 3 semillas, S0+S4 (sensor-solo y dual). ¿Sube el ASR de PFL donde 'mask' no?
+data:
+  window: 2048
+  stride: 512
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+  theta: 0.1
+grid:
+  seeds: [0, 1, 2]
+  alphas: [0.3]
+  betas: [0.4]
+  defenses: [AutoGM-full, AutoGM-PFL]
+  scenarios: [S0, S4]
+  modes: [constrained]
+  fault_owners: []
+  target_class: 3
+attack:
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+  sensor_frac: 0.3
+  sensor_gamma: 1.0
+  sensor_mode: flip
+# Celdas: seeds(3) x def(2) x alpha(1) x [ S0(1) + beta0.4( S4:None + S4:constrained = 2 ) ] = 18. ~5 min GPU.
