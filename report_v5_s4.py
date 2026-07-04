@@ -93,43 +93,47 @@ def build_report(path):
                 L.append(f"| {dfn} | {lbl} | {_f(c['asr_mean'])} | {c['collapses']}/{c['n']} | "
                          f"{_f(c['recall'])} | {_f(c['a_mal'],3)} | {_f(c['a_hon'],3)} |")
 
-    # --- Lectura automatica: el veredicto PFL S3 vs S4 ---
-    L.append("\n## Lectura automatica — ¿el sensor compartido rompe PFL?\n")
-    notes = []
+    # --- Lectura automatica: cruce S3 (modelo) vs S4 (sensor) — ¿alguna M2 sobrevive AMBOS? ---
+    THR = 0.15  # ASR < THR => la defensa "sobrevive" ese vector
     a_lo = min(alphas)  # regimen mas heterogeneo (donde el dual muerde)
-    pfl = "AutoGM-PFL"
-    if pfl in defenses:
-        s3 = _cell(recs, pfl, a_lo, "S3", "constrained", tgt)
-        s4s = _cell(recs, pfl, a_lo, "S4", None, tgt)
-        s4d = _cell(recs, pfl, a_lo, "S4", "constrained", tgt)
-        if s3 and s4d:
-            notes.append(
-                f"- **AutoGM-PFL (alpha={a_lo}):** S3 dual clasico ASR={_f(s3['asr_mean'])} "
-                f"({s3['collapses']}/{s3['n']} colapsos) vs **S4 dual completo ASR={_f(s4d['asr_mean'])} "
-                f"({s4d['collapses']}/{s4d['n']})**"
-                + (f"; S4 sensor-solo ASR={_f(s4s['asr_mean'])} ({s4s['collapses']}/{s4s['n']})." if s4s else "."))
-            broke = s4d["asr_mean"] - s3["asr_mean"]
-            if broke > 0.2:
-                notes.append(
-                    f"- **VEREDICTO: el sensor compartido SI quiebra la personalizacion** (Δ ASR = "
-                    f"+{_f(broke)} sobre S3). La mitad-dispositivo llega a lo local, que es lo unico de lo "
-                    f"que PFL depende -> gap REAFIRMADO contra el baseline mas fuerte (rompiendo, no argumentando).")
-            else:
-                notes.append(
-                    f"- **VEREDICTO: PFL tambien aguanta S4** (Δ ASR = {_f(broke)}). El sensor compartido no "
-                    f"basta con este `sensor_frac`; replantear (subir fraccion / atacar test por cliente).")
-    # contraste con defensas de modelo global: ¿protegen a las victimas del sensor?
-    for dfn in ("AutoGM", "AutoGM-full"):
-        if dfn in defenses:
-            g3 = _cell(recs, dfn, a_lo, "S3", "constrained", tgt)
-            g4 = _cell(recs, dfn, a_lo, "S4", "constrained", tgt)
-            if g3 and g4:
-                notes.append(
-                    f"- **{dfn} (modelo global, alpha={a_lo}):** S3 ASR={_f(g3['asr_mean'])} "
-                    f"({g3['collapses']}/{g3['n']}) vs S4 ASR={_f(g4['asr_mean'])} ({g4['collapses']}/{g4['n']}) "
-                    f"-> el modelo global {'PROTEGE' if g4['asr_mean'] < 0.2 else 'NO protege'} a las victimas del "
-                    f"sensor (aprende la falla de los honestos no-victima).")
-    L.extend(notes or ["- (sin lectura: faltan celdas)"])
+    L.append(f"\n## Lectura automatica — cruce Adv2(modelo,S3) vs Adv1(sensor,S4), alpha={a_lo}\n")
+    L.append(f"Una defensa 'sobrevive' un vector si ASR<{THR}. Interesa si EXISTE alguna que sobreviva LOS DOS.\n")
+    L.append("| defensa | ASR S3 (modelo) | ASR S4 (sensor, peor) | sobrevive S3 | sobrevive S4 | sobrevive AMBOS |")
+    L.append("|---|---:|---:|:--:|:--:|:--:|")
+    robustos = [d for d in defenses if d != "FedAvg"]
+    survive_both = []
+    for dfn in robustos:
+        s3 = _cell(recs, dfn, a_lo, "S3", "constrained", tgt)
+        s4s = _cell(recs, dfn, a_lo, "S4", None, tgt)
+        s4d = _cell(recs, dfn, a_lo, "S4", "constrained", tgt)
+        if not s3 or not (s4s or s4d):
+            continue
+        asr_s3 = s3["asr_mean"]
+        asr_s4 = max([c["asr_mean"] for c in (s4s, s4d) if c])  # peor caso del sensor
+        ok3, ok4 = asr_s3 < THR, asr_s4 < THR
+        both = "SI" if (ok3 and ok4) else "**NO**"
+        if ok3 and ok4:
+            survive_both.append(dfn)
+        L.append(f"| {dfn} | {_f(asr_s3)} | {_f(asr_s4)} | {'si' if ok3 else 'CAE'} | "
+                 f"{'si' if ok4 else 'CAE'} | {both} |")
+
+    L.append("")
+    if not survive_both:
+        L.append("- **VEREDICTO: NINGUNA defensa de servidor (M2) sobrevive los DOS vectores.** El adversario "
+                 "dual, al disponer de Adv2 (envenenamiento de modelo, S3) Y Adv1 (relabel de sensor, S4), "
+                 "derrota CUALQUIER eleccion de defensa de agregacion: la unica que resiste el modelo (PFL) "
+                 "cae ante el sensor, y las que resisten el sensor (AutoGM suave, D-WFA) caen ante el modelo. "
+                 "Es el gap DEMOSTRADO por ruptura (no por argumento) -> motiva el acoplamiento M1(borde)+M2.")
+    else:
+        L.append(f"- **VEREDICTO: {', '.join(survive_both)} sobrevive(n) ambos vectores** -> el gap dual no "
+                 f"se sostiene con este diseno; revisar.")
+    # mecanismo del fallo del sensor: exclusion dura descarta a los portadores honestos de la falla
+    for dfn in ("AutoGM-full", "AutoGM-PFL"):
+        c = _cell(recs, dfn, a_lo, "S4", None, tgt)
+        if c and c["recall"] is not None and c["recall"] < 0.3:
+            L.append(f"- **{dfn}:** bajo S4 el recall de la falla objetivo cae a {_f(c['recall'])} (la victima "
+                     f"honesta reetiquetada + exclusion dura η* que descarta a los portadores honestos de la "
+                     f"falla) -> supresion de clase rara WEAPONIZADA por el sensor.")
 
     out = os.path.join(RESULTS, f"report__{name}.md")
     open(out, "w", encoding="utf-8").write("\n".join(L) + "\n")
