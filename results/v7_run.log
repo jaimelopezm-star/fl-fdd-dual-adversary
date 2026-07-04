@@ -1,0 +1,401 @@
+[grid_f4] NOTA: --jobs>1 con --device cuda -> varios procesos comparten la GPU. En una GPU grande (p.ej. RTX 4090 24GB) con modelo diminuto es seguro y mejora el aprovechamiento.
+[grid_f4] config='v7_blocked' -> 400 celdas | win=2048 stride=512 n_clients=30 rounds=40 defenses=['FedAvg', 'AutoGM', 'AutoGM-full', 'AutoGM-PFL', 'D-WFA'] device=cuda jobs=8 resume=True(4 hechas)
+[grid_f4] resume: 4 celdas ya en checkpoint -> se omiten; quedan 396.
+grid v7_blocked x8:   0%|          | 0/396 [00:00<?, ?celda/s]  [   1/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:   0%|          | 1/396 [01:50<12:05:08, 110.15s/celda]  [   2/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:   1%|          | 2/396 [01:50<5:00:57, 45.83s/celda]    [   3/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:   1%|          | 3/396 [01:51<2:43:38, 24.98s/celda]  [   4/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   1%|          | 4/396 [01:51<1:39:12, 15.18s/celda]  [   5/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   1%|▏         | 5/396 [01:51<1:04:38,  9.92s/celda]  [   6/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.029 a_hon=0.036
+grid v7_blocked x8:   2%|▏         | 6/396 [01:52<43:59,  6.77s/celda]    [   7/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.041 a_hon=0.028
+  [   8/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.042 a_hon=0.028
+grid v7_blocked x8:   2%|▏         | 8/396 [01:54<24:34,  3.80s/celda]  [   9/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   2%|▏         | 9/396 [03:36<3:10:52, 29.59s/celda]  [  10/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:   3%|▎         | 10/396 [03:38<2:20:47, 21.88s/celda]  [  11/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.057 a_hon=0.018
+grid v7_blocked x8:   3%|▎         | 11/396 [03:38<1:42:44, 16.01s/celda]  [  12/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:   3%|▎         | 12/396 [03:39<1:14:44, 11.68s/celda]  [  13/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.29 DR=0.71 a_mal=0.022 a_hon=0.041
+grid v7_blocked x8:   3%|▎         | 13/396 [03:41<56:50,  8.90s/celda]    [  14/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   4%|▎         | 14/396 [03:42<41:21,  6.50s/celda]  [  15/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.67 DR=0.33 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:   4%|▍         | 15/396 [03:43<31:46,  5.00s/celda]  [  16/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.10 DR=0.90 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:   4%|▍         | 16/396 [03:44<23:19,  3.68s/celda]  [  17/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   4%|▍         | 17/396 [05:24<3:24:45, 32.42s/celda]  [  18/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:   5%|▍         | 18/396 [05:25<2:23:58, 22.85s/celda]  [  19/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.07 DR=0.93 a_mal=0.021 a_hon=0.042
+grid v7_blocked x8:   5%|▍         | 19/396 [05:26<1:44:06, 16.57s/celda]  [  20/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.028 a_hon=0.037
+grid v7_blocked x8:   5%|▌         | 20/396 [05:27<1:13:39, 11.75s/celda]  [  21/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.28 DR=0.72 a_mal=0.022 a_hon=0.041
+grid v7_blocked x8:   5%|▌         | 21/396 [08:36<6:45:12, 64.83s/celda]  [  22/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.05 DR=0.72 a_mal=0.046 a_hon=0.025
+grid v7_blocked x8:   6%|▌         | 22/396 [08:37<4:44:46, 45.68s/celda]  [  23/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.22 DR=0.77 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:   6%|▌         | 23/396 [08:39<3:22:10, 32.52s/celda]  [  24/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   6%|▌         | 24/396 [09:02<3:05:30, 29.92s/celda]  [  25/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:   6%|▋         | 25/396 [10:17<4:28:12, 43.38s/celda]  [  26/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.96 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:   7%|▋         | 26/396 [10:17<3:07:32, 30.41s/celda]  [  27/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.17 DR=0.83 a_mal=0.021 a_hon=0.042
+grid v7_blocked x8:   7%|▋         | 27/396 [10:19<2:14:26, 21.86s/celda]  [  28/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.030
+grid v7_blocked x8:   7%|▋         | 28/396 [10:22<1:39:24, 16.21s/celda]  [  29/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   7%|▋         | 29/396 [10:23<1:10:34, 11.54s/celda]  [  30/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:   8%|▊         | 30/396 [10:28<59:14,  9.71s/celda]    [  31/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   8%|▊         | 31/396 [10:43<1:07:59, 11.18s/celda]  [  32/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:   8%|▊         | 32/396 [10:52<1:03:21, 10.44s/celda]  [  33/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   8%|▊         | 33/396 [12:03<2:53:02, 28.60s/celda]  [  34/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:   9%|▊         | 34/396 [12:05<2:05:14, 20.76s/celda]  [  35/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:   9%|▉         | 35/396 [12:08<1:32:04, 15.30s/celda]  [  36/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.046 a_hon=0.025
+grid v7_blocked x8:   9%|▉         | 36/396 [12:08<1:05:31, 10.92s/celda]  [  37/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:   9%|▉         | 37/396 [12:11<50:53,  8.50s/celda]    [  38/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.92 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  10%|▉         | 38/396 [12:16<43:26,  7.28s/celda]  [  39/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  10%|▉         | 39/396 [12:30<56:37,  9.52s/celda]  [  40/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  10%|█         | 40/396 [12:41<58:14,  9.82s/celda]  [  41/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.035 a_hon=0.032
+grid v7_blocked x8:  10%|█         | 41/396 [13:48<2:39:08, 26.90s/celda]  [  42/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  11%|█         | 42/396 [13:51<1:57:34, 19.93s/celda]  [  43/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.035 a_hon=0.032
+grid v7_blocked x8:  11%|█         | 43/396 [13:57<1:31:17, 15.52s/celda]  [  44/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.035 a_hon=0.032
+  [  45/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  11%|█▏        | 45/396 [13:59<52:19,  8.94s/celda]    [  46/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.43 a_mal=0.064 a_hon=0.013
+grid v7_blocked x8:  12%|█▏        | 46/396 [14:06<48:51,  8.38s/celda]  [  47/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.035 a_hon=0.032
+grid v7_blocked x8:  12%|█▏        | 47/396 [14:15<50:41,  8.71s/celda]  [  48/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  12%|█▏        | 48/396 [14:29<58:16, 10.05s/celda]  [  49/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  12%|█▏        | 49/396 [15:34<2:26:50, 25.39s/celda]  [  50/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.042 a_hon=0.028
+grid v7_blocked x8:  13%|█▎        | 50/396 [15:37<1:50:21, 19.14s/celda]  [  51/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.24 DR=0.76 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  13%|█▎        | 51/396 [15:45<1:30:53, 15.81s/celda]  [  52/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.31 DR=0.69 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  13%|█▎        | 52/396 [15:45<1:04:40, 11.28s/celda]  [  53/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  13%|█▎        | 53/396 [15:48<50:32,  8.84s/celda]    [  54/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.80 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:  14%|█▎        | 54/396 [15:54<45:06,  7.91s/celda]  [  55/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.010 a_hon=0.049
+grid v7_blocked x8:  14%|█▍        | 55/396 [16:04<48:39,  8.56s/celda]  [  56/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:  14%|█▍        | 56/396 [16:18<56:54, 10.04s/celda]  [  57/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  14%|█▍        | 57/396 [17:23<2:30:35, 26.65s/celda]  [  58/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.048 a_hon=0.024
+grid v7_blocked x8:  15%|█▍        | 58/396 [17:27<1:50:41, 19.65s/celda]  [  59/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.15 DR=0.85 a_mal=0.022 a_hon=0.041
+grid v7_blocked x8:  15%|█▍        | 59/396 [17:34<1:29:56, 16.01s/celda]  [  60/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  15%|█▌        | 60/396 [17:35<1:03:58, 11.42s/celda]  [  61/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.49 a_mal=0.042 a_hon=0.028
+grid v7_blocked x8:  15%|█▌        | 61/396 [20:44<6:01:21, 64.72s/celda]  [  62/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.66 a_mal=0.010 a_hon=0.049
+grid v7_blocked x8:  16%|█▌        | 62/396 [20:52<4:25:13, 47.64s/celda]  [  63/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  16%|█▌        | 63/396 [21:08<3:31:39, 38.14s/celda]  [  64/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.32 DR=0.67 a_mal=0.029 a_hon=0.036
+grid v7_blocked x8:  16%|█▌        | 64/396 [21:10<2:31:57, 27.46s/celda]  [  65/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.03 DR=0.82 a_mal=0.051 a_hon=0.022
+grid v7_blocked x8:  16%|█▋        | 65/396 [22:13<3:29:07, 37.91s/celda]  [  66/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.20 DR=0.80 a_mal=0.022 a_hon=0.041
+grid v7_blocked x8:  17%|█▋        | 66/396 [22:25<2:45:42, 30.13s/celda]  [  67/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  17%|█▋        | 67/396 [22:28<2:00:52, 22.04s/celda]  [  68/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  17%|█▋        | 68/396 [22:28<1:25:05, 15.57s/celda]  [  69/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.45 a_mal=0.060 a_hon=0.015
+grid v7_blocked x8:  17%|█▋        | 69/396 [22:41<1:19:25, 14.57s/celda]  [  70/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  18%|█▊        | 70/396 [22:43<1:00:15, 11.09s/celda]  [  71/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.030
+grid v7_blocked x8:  18%|█▊        | 71/396 [22:56<1:03:03, 11.64s/celda]  [  72/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.051 a_hon=0.022
+grid v7_blocked x8:  18%|█▊        | 72/396 [22:59<48:17,  8.94s/celda]    [  73/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  18%|█▊        | 73/396 [24:01<2:13:31, 24.80s/celda]  [  74/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.037 a_hon=0.031
+grid v7_blocked x8:  19%|█▊        | 74/396 [24:11<1:49:31, 20.41s/celda]  [  75/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.042 a_hon=0.028
+grid v7_blocked x8:  19%|█▉        | 75/396 [24:15<1:23:18, 15.57s/celda]  [  76/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.18 DR=0.82 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  19%|█▉        | 76/396 [24:16<59:17, 11.12s/celda]    [  77/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  19%|█▉        | 77/396 [24:32<1:06:58, 12.60s/celda]  [  78/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.33 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  20%|█▉        | 78/396 [24:33<48:42,  9.19s/celda]    [  79/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  20%|█▉        | 79/396 [24:46<54:39, 10.35s/celda]  [  80/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.04 DR=0.96 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  20%|██        | 80/396 [24:48<40:50,  7.75s/celda]  [  81/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  20%|██        | 81/396 [25:49<2:04:02, 23.63s/celda]  [  82/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.92 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  21%|██        | 82/396 [25:55<1:37:04, 18.55s/celda]  [  83/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  21%|██        | 83/396 [26:00<1:14:26, 14.27s/celda]  [  84/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  21%|██        | 84/396 [26:07<1:02:33, 12.03s/celda]  [  85/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  21%|██▏       | 85/396 [26:22<1:08:20, 13.18s/celda]  [  86/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.075 a_hon=0.006
+grid v7_blocked x8:  22%|██▏       | 86/396 [26:23<48:33,  9.40s/celda]    [  87/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:  22%|██▏       | 87/396 [26:36<53:53, 10.46s/celda]  [  88/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.059 a_hon=0.016
+grid v7_blocked x8:  22%|██▏       | 88/396 [26:37<39:50,  7.76s/celda]  [  89/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  22%|██▏       | 89/396 [27:35<1:55:32, 22.58s/celda]  [  90/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.41 a_mal=0.063 a_hon=0.013
+grid v7_blocked x8:  23%|██▎       | 90/396 [27:44<1:35:12, 18.67s/celda]  [  91/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.037 a_hon=0.031
+grid v7_blocked x8:  23%|██▎       | 91/396 [27:45<1:08:06, 13.40s/celda]  [  92/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  23%|██▎       | 92/396 [27:54<1:00:58, 12.03s/celda]  [  93/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.22 DR=0.33 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:  23%|██▎       | 93/396 [28:11<1:08:55, 13.65s/celda]  [  94/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  24%|██▎       | 94/396 [28:14<51:43, 10.28s/celda]    [  95/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.014 a_hon=0.046
+grid v7_blocked x8:  24%|██▍       | 95/396 [28:25<53:00, 10.57s/celda]  [  96/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.21 DR=0.79 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  24%|██▍       | 96/396 [28:27<40:15,  8.05s/celda]  [  97/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  24%|██▍       | 97/396 [29:23<1:51:04, 22.29s/celda]  [  98/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.79 a_mal=0.034 a_hon=0.033
+grid v7_blocked x8:  25%|██▍       | 98/396 [29:33<1:33:25, 18.81s/celda]  [  99/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  25%|██▌       | 99/396 [29:35<1:07:12, 13.58s/celda]  [ 100/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.01 DR=0.99 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:  25%|██▌       | 100/396 [29:44<59:57, 12.15s/celda]   [ 101/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.07 DR=0.62 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  26%|██▌       | 101/396 [33:07<5:41:48, 69.52s/celda]  [ 102/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.25 DR=0.72 a_mal=0.014 a_hon=0.046
+grid v7_blocked x8:  26%|██▌       | 102/396 [33:18<4:14:42, 51.98s/celda]  [ 103/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.22 DR=0.76 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  26%|██▌       | 103/396 [33:20<3:01:07, 37.09s/celda]  [ 104/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=0.98 
+grid v7_blocked x8:  26%|██▋       | 104/396 [33:34<2:25:36, 29.92s/celda]  [ 105/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.30 DR=0.70 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  27%|██▋       | 105/396 [34:25<2:56:31, 36.40s/celda]  [ 106/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.85 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  27%|██▋       | 106/396 [34:26<2:04:33, 25.77s/celda]  [ 107/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.18 DR=0.81 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  27%|██▋       | 107/396 [34:36<1:40:29, 20.86s/celda]  [ 108/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  27%|██▋       | 108/396 [34:42<1:19:38, 16.59s/celda]  [ 109/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  28%|██▊       | 109/396 [34:56<1:15:29, 15.78s/celda]  [ 110/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.067 a_hon=0.011
+grid v7_blocked x8:  28%|██▊       | 110/396 [35:07<1:08:02, 14.27s/celda]  [ 111/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  28%|██▊       | 111/396 [35:09<50:52, 10.71s/celda]    [ 112/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.059 a_hon=0.016
+grid v7_blocked x8:  28%|██▊       | 112/396 [35:25<57:18, 12.11s/celda]  [ 113/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  29%|██▊       | 113/396 [36:13<1:48:06, 22.92s/celda]  [ 114/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.61 a_mal=0.054 a_hon=0.019
+grid v7_blocked x8:  29%|██▉       | 114/396 [36:14<1:17:40, 16.53s/celda]  [ 115/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.030
+grid v7_blocked x8:  29%|██▉       | 115/396 [36:22<1:05:04, 13.90s/celda]  [ 116/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  29%|██▉       | 116/396 [36:30<56:52, 12.19s/celda]    [ 117/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  30%|██▉       | 117/396 [36:45<59:32, 12.80s/celda]  [ 118/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.99 a_mal=0.033 a_hon=0.034
+grid v7_blocked x8:  30%|██▉       | 118/396 [36:55<56:16, 12.14s/celda]  [ 119/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.033 a_hon=0.034
+grid v7_blocked x8:  30%|███       | 119/396 [36:55<39:44,  8.61s/celda]  [ 120/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.033 a_hon=0.034
+grid v7_blocked x8:  30%|███       | 120/396 [37:14<52:53, 11.50s/celda]  [ 121/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  31%|███       | 121/396 [38:00<1:40:32, 21.94s/celda]  [ 122/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  31%|███       | 122/396 [38:03<1:13:40, 16.13s/celda]  [ 123/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  31%|███       | 123/396 [38:08<59:23, 13.05s/celda]    [ 124/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  31%|███▏      | 124/396 [38:17<53:27, 11.79s/celda]  [ 125/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  32%|███▏      | 125/396 [38:29<52:43, 11.67s/celda]  [ 126/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.27 DR=0.73 a_mal=0.026 a_hon=0.038
+grid v7_blocked x8:  32%|███▏      | 126/396 [38:35<45:27, 10.10s/celda]  [ 127/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.98 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  32%|███▏      | 127/396 [38:46<45:52, 10.23s/celda]  [ 128/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  32%|███▏      | 128/396 [39:00<51:22, 11.50s/celda]  [ 129/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  33%|███▎      | 129/396 [39:46<1:37:28, 21.91s/celda]  [ 130/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.88 a_mal=0.063 a_hon=0.014
+grid v7_blocked x8:  33%|███▎      | 130/396 [39:49<1:12:00, 16.24s/celda]  [ 131/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:  33%|███▎      | 131/396 [39:55<58:18, 13.20s/celda]    [ 132/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.048 a_hon=0.023
+grid v7_blocked x8:  33%|███▎      | 132/396 [40:04<51:37, 11.73s/celda]  [ 133/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  34%|███▎      | 133/396 [40:15<50:57, 11.63s/celda]  [ 134/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  34%|███▍      | 134/396 [40:21<43:46, 10.02s/celda]  [ 135/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.66 a_mal=0.024 a_hon=0.040
+grid v7_blocked x8:  34%|███▍      | 135/396 [40:35<48:28, 11.15s/celda]  [ 136/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.08 DR=0.92 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  34%|███▍      | 136/396 [40:50<52:23, 12.09s/celda]  [ 137/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  35%|███▍      | 137/396 [41:34<1:33:54, 21.76s/celda]  [ 138/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.01 DR=0.47 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  35%|███▍      | 138/396 [41:37<1:10:04, 16.30s/celda]  [ 139/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.13 DR=0.87 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  35%|███▌      | 139/396 [41:43<56:07, 13.10s/celda]    [ 140/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.028 a_hon=0.037
+grid v7_blocked x8:  35%|███▌      | 140/396 [41:51<49:24, 11.58s/celda]  [ 141/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.14 DR=0.51 a_mal=0.051 a_hon=0.022
+grid v7_blocked x8:  36%|███▌      | 141/396 [45:14<4:53:31, 69.07s/celda]  [ 142/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.34 DR=0.64 a_mal=0.024 a_hon=0.039
+grid v7_blocked x8:  36%|███▌      | 142/396 [45:28<3:42:12, 52.49s/celda]  [ 143/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.03 DR=0.91 
+grid v7_blocked x8:  36%|███▌      | 143/396 [45:31<2:39:08, 37.74s/celda]  [ 144/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.27 DR=0.72 a_mal=0.033 a_hon=0.034
+grid v7_blocked x8:  36%|███▋      | 144/396 [45:36<1:56:41, 27.78s/celda]  [ 145/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.02 DR=0.65 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  37%|███▋      | 145/396 [46:28<2:27:08, 35.17s/celda]  [ 146/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.18 DR=0.81 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  37%|███▋      | 146/396 [46:31<1:45:46, 25.39s/celda]  [ 147/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.029 a_hon=0.037
+grid v7_blocked x8:  37%|███▋      | 147/396 [46:35<1:18:45, 18.98s/celda]  [ 148/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  37%|███▋      | 148/396 [46:54<1:18:08, 18.91s/celda]  [ 149/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  38%|███▊      | 149/396 [47:02<1:05:06, 15.82s/celda]  [ 150/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.99 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:  38%|███▊      | 150/396 [47:15<1:00:40, 14.80s/celda]  [ 151/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.31 DR=0.69 a_mal=0.028 a_hon=0.037
+grid v7_blocked x8:  38%|███▊      | 151/396 [47:17<45:25, 11.13s/celda]    [ 152/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:  38%|███▊      | 152/396 [47:25<41:20, 10.17s/celda]  [ 153/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  39%|███▊      | 153/396 [48:16<1:30:11, 22.27s/celda]  [ 154/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.95 a_mal=0.053 a_hon=0.020
+grid v7_blocked x8:  39%|███▉      | 154/396 [48:18<1:05:28, 16.23s/celda]  [ 155/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.039 a_hon=0.029
+grid v7_blocked x8:  39%|███▉      | 155/396 [48:22<50:47, 12.64s/celda]    [ 156/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.048 a_hon=0.023
+grid v7_blocked x8:  39%|███▉      | 156/396 [48:36<52:22, 13.09s/celda]  [ 157/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  40%|███▉      | 157/396 [48:52<55:14, 13.87s/celda]  [ 158/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.67 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  40%|███▉      | 158/396 [48:58<45:13, 11.40s/celda]  [ 159/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.32 DR=0.67 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  40%|████      | 159/396 [49:03<38:22,  9.71s/celda]  [ 160/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.32 DR=0.67 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  40%|████      | 160/396 [49:13<38:41,  9.84s/celda]  [ 161/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  41%|████      | 161/396 [50:03<1:24:38, 21.61s/celda]  [ 162/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.75 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  41%|████      | 162/396 [50:09<1:05:58, 16.91s/celda]  [ 163/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  41%|████      | 163/396 [50:10<48:04, 12.38s/celda]    [ 164/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  41%|████▏     | 164/396 [50:25<50:37, 13.09s/celda]  [ 165/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  42%|████▏     | 165/396 [50:38<50:07, 13.02s/celda]  [ 166/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.66 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  42%|████▏     | 166/396 [50:46<44:08, 11.51s/celda]  [ 167/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.029 a_hon=0.036
+grid v7_blocked x8:  42%|████▏     | 167/396 [50:50<35:22,  9.27s/celda]  [ 168/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.046 a_hon=0.025
+grid v7_blocked x8:  42%|████▏     | 168/396 [50:56<31:24,  8.27s/celda]  [ 169/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  43%|████▎     | 169/396 [51:52<1:25:27, 22.59s/celda]  [ 170/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.33 a_mal=0.064 a_hon=0.013
+grid v7_blocked x8:  43%|████▎     | 170/396 [51:57<1:05:02, 17.27s/celda]  [ 171/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.030
+grid v7_blocked x8:  43%|████▎     | 171/396 [51:59<48:12, 12.86s/celda]    [ 172/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  43%|████▎     | 172/396 [52:13<49:05, 13.15s/celda]  [ 173/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  44%|████▎     | 173/396 [52:28<50:18, 13.54s/celda]  [ 174/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.59 a_mal=0.056 a_hon=0.019
+grid v7_blocked x8:  44%|████▍     | 174/396 [52:37<46:03, 12.45s/celda]  [ 175/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.021 a_hon=0.042
+grid v7_blocked x8:  44%|████▍     | 175/396 [52:39<33:56,  9.22s/celda]  [ 176/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.032 a_hon=0.035
+grid v7_blocked x8:  44%|████▍     | 176/396 [52:46<31:07,  8.49s/celda]  [ 177/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  45%|████▍     | 177/396 [53:41<1:21:43, 22.39s/celda]  [ 178/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.79 a_mal=0.049 a_hon=0.023
+grid v7_blocked x8:  45%|████▍     | 178/396 [53:47<1:03:50, 17.57s/celda]  [ 179/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.24 DR=0.76 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  45%|████▌     | 179/396 [53:48<45:50, 12.67s/celda]    [ 180/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:  45%|████▌     | 180/396 [54:01<45:59, 12.77s/celda]  [ 181/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.02 DR=0.57 a_mal=0.054 a_hon=0.019
+grid v7_blocked x8:  46%|████▌     | 181/396 [57:32<4:17:58, 71.99s/celda]  [ 182/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.26 DR=0.72 a_mal=0.021 a_hon=0.041
+  [ 183/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.25 DR=0.71 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  46%|████▌     | 183/396 [57:39<2:24:06, 40.59s/celda]  [ 184/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=0.96 
+grid v7_blocked x8:  46%|████▋     | 184/396 [57:49<1:56:09, 32.88s/celda]  [ 185/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.23 DR=0.77 a_mal=0.016 a_hon=0.045
+grid v7_blocked x8:  47%|████▋     | 185/396 [58:40<2:12:40, 37.73s/celda]  [ 186/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.03 DR=0.70 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:  47%|████▋     | 186/396 [58:42<1:37:38, 27.90s/celda]  [ 187/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.82 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:  47%|████▋     | 187/396 [58:51<1:19:09, 22.72s/celda]  [ 188/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  47%|████▋     | 188/396 [58:53<57:46, 16.67s/celda]    [ 189/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.72 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  48%|████▊     | 189/396 [59:20<1:08:16, 19.79s/celda]  [ 190/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  48%|████▊     | 190/396 [59:21<48:35, 14.15s/celda]    [ 191/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.029 a_hon=0.037
+grid v7_blocked x8:  48%|████▊     | 191/396 [59:27<40:44, 11.93s/celda]  [ 192/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.042 a_hon=0.027
+grid v7_blocked x8:  48%|████▊     | 192/396 [59:38<39:39, 11.67s/celda]  [ 193/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  49%|████▊     | 193/396 [1:00:28<1:17:51, 23.01s/celda]  [ 194/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.33 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  49%|████▉     | 194/396 [1:00:30<56:18, 16.73s/celda]    [ 195/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:  49%|████▉     | 195/396 [1:00:36<45:05, 13.46s/celda]  [ 196/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  49%|████▉     | 196/396 [1:00:42<37:03, 11.12s/celda]  [ 197/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  50%|████▉     | 197/396 [1:01:08<52:07, 15.72s/celda]  [ 198/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.92 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  50%|█████     | 198/396 [1:01:10<37:48, 11.46s/celda]  [ 199/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.17 DR=0.83 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  50%|█████     | 199/396 [1:01:16<32:50, 10.00s/celda]  [ 200/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  51%|█████     | 200/396 [1:01:29<35:05, 10.74s/celda]  [ 201/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  51%|█████     | 201/396 [1:02:16<1:10:46, 21.78s/celda]  [ 202/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  51%|█████     | 202/396 [1:02:19<52:00, 16.08s/celda]    [ 203/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  51%|█████▏    | 203/396 [1:02:24<41:28, 12.89s/celda]  [ 204/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  52%|█████▏    | 204/396 [1:02:31<35:09, 10.99s/celda]  [ 205/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  52%|█████▏    | 205/396 [1:02:57<49:11, 15.45s/celda]  [ 206/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.14 DR=0.36 a_mal=0.058 a_hon=0.017
+grid v7_blocked x8:  52%|█████▏    | 206/396 [1:02:59<35:57, 11.36s/celda]  [ 207/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  52%|█████▏    | 207/396 [1:03:02<28:27,  9.03s/celda]  [ 208/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.050 a_hon=0.022
+grid v7_blocked x8:  53%|█████▎    | 208/396 [1:03:18<34:30, 11.01s/celda]  [ 209/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  53%|█████▎    | 209/396 [1:04:04<1:07:16, 21.58s/celda]  [ 210/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.070 a_hon=0.009
+grid v7_blocked x8:  53%|█████▎    | 210/396 [1:04:10<51:53, 16.74s/celda]    [ 211/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.037 a_hon=0.031
+grid v7_blocked x8:  53%|█████▎    | 211/396 [1:04:14<39:46, 12.90s/celda]  [ 212/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.053 a_hon=0.020
+grid v7_blocked x8:  54%|█████▎    | 212/396 [1:04:19<32:42, 10.66s/celda]  [ 213/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  54%|█████▍    | 213/396 [1:04:42<44:01, 14.43s/celda]  [ 214/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.018 a_hon=0.044
+grid v7_blocked x8:  54%|█████▍    | 214/396 [1:04:43<30:55, 10.20s/celda]  [ 215/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  54%|█████▍    | 215/396 [1:04:49<27:09,  9.00s/celda]  [ 216/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.24 DR=0.76 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  55%|█████▍    | 216/396 [1:05:04<32:55, 10.98s/celda]  [ 217/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  55%|█████▍    | 217/396 [1:05:51<1:04:14, 21.53s/celda]  [ 218/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.77 a_mal=0.027 a_hon=0.038
+grid v7_blocked x8:  55%|█████▌    | 218/396 [1:06:01<54:11, 18.27s/celda]    [ 219/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.30 DR=0.70 a_mal=0.015 a_hon=0.046
+grid v7_blocked x8:  55%|█████▌    | 219/396 [1:06:03<39:15, 13.31s/celda]  [ 220/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.06 DR=0.94 a_mal=0.028 a_hon=0.037
+grid v7_blocked x8:  56%|█████▌    | 220/396 [1:06:08<31:58, 10.90s/celda]  [ 221/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.08 DR=0.44 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  56%|█████▌    | 221/396 [1:09:20<3:10:17, 65.25s/celda]  [ 222/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.34 DR=0.65 a_mal=0.018 a_hon=0.044
+grid v7_blocked x8:  56%|█████▌    | 222/396 [1:09:42<2:31:46, 52.34s/celda]  [ 223/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.31 DR=0.69 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  56%|█████▋    | 223/396 [1:09:58<1:58:40, 41.16s/celda]  [ 224/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=0.98 
+grid v7_blocked x8:  57%|█████▋    | 224/396 [1:10:04<1:28:01, 30.71s/celda]  [ 225/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.01 DR=0.85 a_mal=0.027 a_hon=0.037
+grid v7_blocked x8:  57%|█████▋    | 225/396 [1:10:54<1:44:32, 36.68s/celda]  [ 226/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.22 DR=0.78 a_mal=0.014 a_hon=0.046
+grid v7_blocked x8:  57%|█████▋    | 226/396 [1:10:57<1:15:12, 26.54s/celda]  [ 227/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.028 a_hon=0.037
+grid v7_blocked x8:  57%|█████▋    | 227/396 [1:11:00<54:49, 19.47s/celda]    [ 228/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  58%|█████▊    | 228/396 [1:11:04<40:58, 14.64s/celda]  [ 229/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  58%|█████▊    | 229/396 [1:11:06<30:41, 11.03s/celda]  [ 230/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.56 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  58%|█████▊    | 230/396 [1:11:31<42:09, 15.24s/celda]  [ 231/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.035 a_hon=0.032
+grid v7_blocked x8:  58%|█████▊    | 231/396 [1:11:44<40:07, 14.59s/celda]  [ 232/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.048 a_hon=0.023
+grid v7_blocked x8:  59%|█████▊    | 232/396 [1:11:52<33:55, 12.41s/celda]  [ 233/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  59%|█████▉    | 233/396 [1:12:43<1:05:01, 23.93s/celda]  [ 234/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.54 DR=0.33 a_mal=0.059 a_hon=0.016
+grid v7_blocked x8:  59%|█████▉    | 234/396 [1:12:46<47:58, 17.77s/celda]    [ 235/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  59%|█████▉    | 235/396 [1:12:48<35:20, 13.17s/celda]  [ 236/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  60%|█████▉    | 236/396 [1:12:49<25:27,  9.55s/celda]  [ 237/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.053 a_hon=0.020
+grid v7_blocked x8:  60%|█████▉    | 237/396 [1:12:52<20:05,  7.58s/celda]  [ 238/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  60%|██████    | 238/396 [1:13:21<36:40, 13.92s/celda]  [ 239/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  60%|██████    | 239/396 [1:13:34<35:22, 13.52s/celda]  [ 240/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  61%|██████    | 240/396 [1:13:41<29:55, 11.51s/celda]  [ 241/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.25 DR=0.75 a_mal=0.044 a_hon=0.027
+grid v7_blocked x8:  61%|██████    | 241/396 [1:14:29<58:19, 22.58s/celda]  [ 242/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  61%|██████    | 242/396 [1:14:34<44:01, 17.15s/celda]  [ 243/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.95 a_mal=0.044 a_hon=0.027
+grid v7_blocked x8:  61%|██████▏   | 243/396 [1:14:36<32:35, 12.78s/celda]  [ 244/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.044 a_hon=0.027
+grid v7_blocked x8:  62%|██████▏   | 244/396 [1:14:38<23:54,  9.44s/celda]  [ 245/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  62%|██████▏   | 245/396 [1:14:41<19:04,  7.58s/celda]  [ 246/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.61 a_mal=0.057 a_hon=0.017
+grid v7_blocked x8:  62%|██████▏   | 246/396 [1:15:11<35:39, 14.26s/celda]  [ 247/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.033 a_hon=0.034
+grid v7_blocked x8:  62%|██████▏   | 247/396 [1:15:22<32:45, 13.19s/celda]  [ 248/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  63%|██████▎   | 248/396 [1:15:30<28:46, 11.67s/celda]  [ 249/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  63%|██████▎   | 249/396 [1:16:08<47:55, 19.56s/celda]  [ 250/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.33 a_mal=0.063 a_hon=0.014
+grid v7_blocked x8:  63%|██████▎   | 250/396 [1:16:23<44:52, 18.44s/celda]  [ 251/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.039 a_hon=0.029
+grid v7_blocked x8:  63%|██████▎   | 251/396 [1:16:25<32:34, 13.48s/celda]  [ 252/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  64%|██████▎   | 252/396 [1:16:29<24:59, 10.41s/celda]  [ 253/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.051 a_hon=0.022
+grid v7_blocked x8:  64%|██████▍   | 253/396 [1:16:30<18:01,  7.56s/celda]  [ 254/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.01 DR=0.67 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  64%|██████▍   | 254/396 [1:17:03<35:58, 15.20s/celda]  [ 255/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.014 a_hon=0.046
+grid v7_blocked x8:  64%|██████▍   | 255/396 [1:17:11<31:10, 13.27s/celda]  [ 256/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.029 a_hon=0.037
+grid v7_blocked x8:  65%|██████▍   | 256/396 [1:17:19<27:15, 11.68s/celda]  [ 257/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  65%|██████▍   | 257/396 [1:17:47<38:18, 16.54s/celda]  [ 258/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.68 a_mal=0.044 a_hon=0.026
+grid v7_blocked x8:  65%|██████▌   | 258/396 [1:18:15<46:06, 20.05s/celda]  [ 259/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.018 a_hon=0.043
+grid v7_blocked x8:  65%|██████▌   | 259/396 [1:18:16<32:23, 14.19s/celda]  [ 260/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:  66%|██████▌   | 260/396 [1:18:17<23:36, 10.42s/celda]  [ 261/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  66%|██████▌   | 261/396 [1:21:43<2:35:19, 69.03s/celda]  [ 262/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.74 a_mal=0.053 a_hon=0.020
+grid v7_blocked x8:  66%|██████▌   | 262/396 [1:22:00<1:58:58, 53.27s/celda]  [ 263/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.19 DR=0.80 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:  66%|██████▋   | 263/396 [1:22:06<1:26:57, 39.23s/celda]  [ 264/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.29 DR=0.69 a_mal=0.013 a_hon=0.047
+grid v7_blocked x8:  67%|██████▋   | 264/396 [1:22:07<1:00:36, 27.55s/celda]  [ 265/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  67%|██████▋   | 265/396 [1:23:05<1:20:17, 36.78s/celda]  [ 266/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.030 a_hon=0.035
+grid v7_blocked x8:  67%|██████▋   | 266/396 [1:23:07<57:15, 26.43s/celda]    [ 267/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.17 DR=0.83 a_mal=0.018 a_hon=0.043
+grid v7_blocked x8:  67%|██████▋   | 267/396 [1:23:09<40:57, 19.05s/celda]  [ 268/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.78 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  68%|██████▊   | 268/396 [1:23:14<31:31, 14.78s/celda]  [ 269/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  68%|██████▊   | 269/396 [1:23:30<32:29, 15.35s/celda]  [ 270/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.048 a_hon=0.023
+grid v7_blocked x8:  68%|██████▊   | 270/396 [1:23:50<34:44, 16.54s/celda]  [ 271/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.034 a_hon=0.033
+grid v7_blocked x8:  68%|██████▊   | 271/396 [1:23:54<26:43, 12.82s/celda]  [ 272/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.046 a_hon=0.025
+grid v7_blocked x8:  69%|██████▊   | 272/396 [1:23:55<19:27,  9.41s/celda]  [ 273/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  69%|██████▉   | 273/396 [1:24:55<49:56, 24.36s/celda]  [ 274/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.69 a_mal=0.056 a_hon=0.018
+grid v7_blocked x8:  69%|██████▉   | 274/396 [1:24:57<36:19, 17.87s/celda]  [ 275/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  69%|██████▉   | 275/396 [1:24:59<26:10, 12.98s/celda]  [ 276/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.049 a_hon=0.023
+grid v7_blocked x8:  70%|██████▉   | 276/396 [1:25:03<20:48, 10.40s/celda]  [ 277/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  70%|██████▉   | 277/396 [1:25:20<24:20, 12.27s/celda]  [ 278/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  70%|███████   | 278/396 [1:25:38<27:29, 13.98s/celda]  [ 279/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=0.69 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  70%|███████   | 279/396 [1:25:39<19:57, 10.23s/celda]  [ 280/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.15 DR=0.85 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  71%|███████   | 280/396 [1:25:45<17:10,  8.88s/celda]  [ 281/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  71%|███████   | 281/396 [1:26:44<45:38, 23.81s/celda]  [ 282/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  71%|███████   | 282/396 [1:26:46<33:11, 17.47s/celda]  [ 283/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.05 DR=0.95 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  71%|███████▏  | 283/396 [1:26:48<23:48, 12.64s/celda]  [ 284/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  72%|███████▏  | 284/396 [1:26:52<18:47, 10.07s/celda]  [ 285/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  72%|███████▏  | 285/396 [1:27:09<22:31, 12.17s/celda]  [ 286/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=0.41 DR=0.33 a_mal=0.061 a_hon=0.015
+grid v7_blocked x8:  72%|███████▏  | 286/396 [1:27:24<24:08, 13.16s/celda]  [ 287/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.031
+grid v7_blocked x8:  72%|███████▏  | 287/396 [1:27:28<18:44, 10.31s/celda]  [ 288/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.051 a_hon=0.022
+grid v7_blocked x8:  73%|███████▎  | 288/396 [1:27:35<16:31,  9.18s/celda]  [ 289/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  73%|███████▎  | 289/396 [1:28:32<41:56, 23.51s/celda]  [ 290/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.037 a_hon=0.031
+grid v7_blocked x8:  73%|███████▎  | 290/396 [1:28:35<31:03, 17.58s/celda]  [ 291/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.10 DR=0.90 a_mal=0.030 a_hon=0.036
+grid v7_blocked x8:  73%|███████▎  | 291/396 [1:28:36<22:01, 12.58s/celda]  [ 292/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.20 DR=0.80 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  74%|███████▎  | 292/396 [1:28:41<17:46, 10.25s/celda]  [ 293/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  74%|███████▍  | 293/396 [1:29:00<21:59, 12.81s/celda]  [ 294/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.051 a_hon=0.021
+grid v7_blocked x8:  74%|███████▍  | 294/396 [1:29:09<19:57, 11.74s/celda]  [ 295/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.20 DR=0.80 a_mal=0.018 a_hon=0.043
+grid v7_blocked x8:  74%|███████▍  | 295/396 [1:29:18<18:30, 10.99s/celda]  [ 296/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  75%|███████▍  | 296/396 [1:29:25<16:13,  9.74s/celda]  [ 297/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  75%|███████▌  | 297/396 [1:30:22<39:29, 23.93s/celda]  [ 298/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.03 DR=0.97 a_mal=0.018 a_hon=0.044
+grid v7_blocked x8:  75%|███████▌  | 298/396 [1:30:25<28:48, 17.64s/celda]  [ 299/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.93 a_mal=0.046 a_hon=0.025
+grid v7_blocked x8:  76%|███████▌  | 299/396 [1:30:27<20:38, 12.77s/celda]  [ 300/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  76%|███████▌  | 300/396 [1:30:31<16:23, 10.24s/celda]  [ 301/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.11 DR=0.55 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  76%|███████▌  | 301/396 [1:33:58<1:49:53, 69.41s/celda]  [ 302/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.31 DR=0.68 a_mal=0.018 a_hon=0.043
+grid v7_blocked x8:  76%|███████▋  | 302/396 [1:34:12<1:22:19, 52.55s/celda]  [ 303/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.22 DR=0.78 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  77%|███████▋  | 303/396 [1:34:20<1:00:51, 39.26s/celda]  [ 304/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.01 DR=0.96 
+grid v7_blocked x8:  77%|███████▋  | 304/396 [1:34:22<43:13, 28.19s/celda]    [ 305/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.17 DR=0.83 a_mal=0.018 a_hon=0.043
+grid v7_blocked x8:  77%|███████▋  | 305/396 [1:35:20<56:15, 37.09s/celda]  [ 306/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.81 a_mal=0.024 a_hon=0.039
+grid v7_blocked x8:  77%|███████▋  | 306/396 [1:35:21<39:20, 26.22s/celda]  [ 307/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  78%|███████▊  | 307/396 [1:35:23<28:19, 19.10s/celda]  [ 308/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  78%|███████▊  | 308/396 [1:35:45<28:55, 19.73s/celda]  [ 309/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  78%|███████▊  | 309/396 [1:35:47<21:09, 14.59s/celda]  [ 310/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.05 DR=0.33 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  78%|███████▊  | 310/396 [1:36:01<20:40, 14.43s/celda]  [ 311/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.038 a_hon=0.031
+grid v7_blocked x8:  79%|███████▊  | 311/396 [1:36:09<17:33, 12.39s/celda]  [ 312/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.049 a_hon=0.023
+grid v7_blocked x8:  79%|███████▉  | 312/396 [1:36:13<13:48,  9.86s/celda]  [ 313/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  79%|███████▉  | 313/396 [1:37:09<32:51, 23.75s/celda]  [ 314/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.037 a_hon=0.031
+grid v7_blocked x8:  79%|███████▉  | 314/396 [1:37:10<23:18, 17.05s/celda]  [ 315/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.04 DR=0.96 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  80%|███████▉  | 315/396 [1:37:11<16:11, 12.00s/celda]  [ 316/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.041 a_hon=0.029
+grid v7_blocked x8:  80%|███████▉  | 316/396 [1:37:34<20:38, 15.49s/celda]  [ 317/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  80%|████████  | 317/396 [1:37:35<14:33, 11.06s/celda]  [ 318/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.05 DR=0.33 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  80%|████████  | 318/396 [1:37:50<15:48, 12.16s/celda]  [ 319/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  81%|████████  | 319/396 [1:37:57<13:41, 10.66s/celda]  [ 320/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.025
+grid v7_blocked x8:  81%|████████  | 320/396 [1:38:02<11:14,  8.87s/celda]  [ 321/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.051 a_hon=0.021
+grid v7_blocked x8:  81%|████████  | 321/396 [1:38:57<28:32, 22.84s/celda]  [ 322/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+  [ 323/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.67 a_mal=0.051 a_hon=0.021
+grid v7_blocked x8:  82%|████████▏ | 323/396 [1:38:58<15:10, 12.47s/celda]  [ 324/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.051 a_hon=0.021
+grid v7_blocked x8:  82%|████████▏ | 324/396 [1:39:23<18:42, 15.59s/celda]  [ 325/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+  [ 326/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  82%|████████▏ | 326/396 [1:39:37<14:08, 12.12s/celda]  [ 327/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.034 a_hon=0.033
+grid v7_blocked x8:  83%|████████▎ | 327/396 [1:39:44<12:31, 10.90s/celda]  [ 328/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  83%|████████▎ | 328/396 [1:39:50<10:52,  9.60s/celda]  [ 329/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  83%|████████▎ | 329/396 [1:40:43<23:32, 21.08s/celda]  [ 330/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.044 a_hon=0.026
+grid v7_blocked x8:  83%|████████▎ | 330/396 [1:40:44<17:08, 15.58s/celda]  [ 331/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.070 a_hon=0.009
+grid v7_blocked x8:  84%|████████▎ | 331/396 [1:40:46<12:40, 11.69s/celda]  [ 332/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  84%|████████▍ | 332/396 [1:41:11<16:37, 15.58s/celda]  [ 333/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  84%|████████▍ | 333/396 [1:41:11<11:43, 11.17s/celda]  [ 334/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=0.62 DR=0.33 a_mal=0.051 a_hon=0.021
+grid v7_blocked x8:  84%|████████▍ | 334/396 [1:41:23<11:38, 11.27s/celda]  [ 335/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.33 DR=0.67 a_mal=0.019 a_hon=0.043
+grid v7_blocked x8:  85%|████████▍ | 335/396 [1:41:33<11:04, 10.89s/celda]  [ 336/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.23 DR=0.77 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  85%|████████▍ | 336/396 [1:41:40<09:39,  9.67s/celda]  [ 337/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  85%|████████▌ | 337/396 [1:42:28<20:47, 21.15s/celda]  [ 338/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.67 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  85%|████████▌ | 338/396 [1:42:32<15:28, 16.01s/celda]  [ 339/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.25 DR=0.75 a_mal=0.017 a_hon=0.044
+grid v7_blocked x8:  86%|████████▌ | 339/396 [1:42:34<11:15, 11.86s/celda]  [ 340/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.01 DR=0.99 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  86%|████████▌ | 340/396 [1:42:59<14:47, 15.85s/celda]  [ 341/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.06 DR=0.60 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  86%|████████▌ | 341/396 [1:46:15<1:03:46, 69.57s/celda]  [ 342/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.27 DR=0.73 a_mal=0.019 a_hon=0.043
+grid v7_blocked x8:  86%|████████▋ | 342/396 [1:46:24<46:26, 51.61s/celda]    [ 343/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=0.99 
+grid v7_blocked x8:  87%|████████▋ | 343/396 [1:46:27<32:47, 37.12s/celda]  [ 344/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.26 DR=0.72 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  87%|████████▋ | 344/396 [1:46:33<23:54, 27.59s/celda]  [ 345/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.21 DR=0.78 a_mal=0.017 a_hon=0.044
+grid v7_blocked x8:  87%|████████▋ | 345/396 [1:47:23<29:14, 34.40s/celda]  [ 346/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.04 DR=0.88 a_mal=0.034 a_hon=0.033
+grid v7_blocked x8:  87%|████████▋ | 346/396 [1:47:24<20:12, 24.24s/celda]  [ 347/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  88%|████████▊ | 347/396 [1:47:46<19:16, 23.60s/celda]  [ 348/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.031 a_hon=0.035
+grid v7_blocked x8:  88%|████████▊ | 348/396 [1:47:49<14:05, 17.62s/celda]  [ 349/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  88%|████████▊ | 349/396 [1:48:02<12:37, 16.12s/celda]  [ 350/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  88%|████████▊ | 350/396 [1:48:12<10:54, 14.22s/celda]  [ 351/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.033 a_hon=0.033
+grid v7_blocked x8:  89%|████████▊ | 351/396 [1:48:15<08:13, 10.96s/celda]  [ 352/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.052 a_hon=0.021
+grid v7_blocked x8:  89%|████████▉ | 352/396 [1:48:22<07:03,  9.62s/celda]  [ 353/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  89%|████████▉ | 353/396 [1:49:10<15:16, 21.32s/celda]  [ 354/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.059 a_hon=0.016
+grid v7_blocked x8:  89%|████████▉ | 354/396 [1:49:10<10:30, 15.00s/celda]  [ 355/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.045 a_hon=0.026
+grid v7_blocked x8:  90%|████████▉ | 355/396 [1:49:34<11:56, 17.47s/celda]  [ 356/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.055 a_hon=0.019
+grid v7_blocked x8:  90%|████████▉ | 356/396 [1:49:37<08:48, 13.21s/celda]  [ 357/396] diri FedAvg  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  90%|█████████ | 357/396 [1:49:46<07:47, 11.99s/celda]  [ 358/396] diri FedAvg  S3 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  90%|█████████ | 358/396 [1:50:01<08:08, 12.85s/celda]  [ 359/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  91%|█████████ | 359/396 [1:50:03<05:53,  9.56s/celda]  [ 360/396] diri FedAvg  S4 a=0.3 fo=None b=0.4 constrained ASR=0.01 DR=0.99 a_mal=0.043 a_hon=0.027
+grid v7_blocked x8:  91%|█████████ | 360/396 [1:50:09<05:10,  8.62s/celda]  [ 361/396] diri FedAvg  S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.67 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  91%|█████████ | 361/396 [1:51:01<12:32, 21.51s/celda]  [ 362/396] diri FedAvg  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  91%|█████████▏| 362/396 [1:51:01<08:34, 15.13s/celda]  [ 363/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  92%|█████████▏| 363/396 [1:51:23<09:21, 17.01s/celda]  [ 364/396] diri FedAvg  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.047 a_hon=0.024
+grid v7_blocked x8:  92%|█████████▏| 364/396 [1:51:24<06:34, 12.31s/celda]  [ 365/396] diri AutoGM  S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  92%|█████████▏| 365/396 [1:51:30<05:29, 10.61s/celda]  [ 366/396] diri AutoGM  S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.066 a_hon=0.011
+grid v7_blocked x8:  92%|█████████▏| 366/396 [1:51:48<06:19, 12.65s/celda]  [ 367/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.036 a_hon=0.032
+grid v7_blocked x8:  93%|█████████▎| 367/396 [1:51:51<04:40,  9.66s/celda]  [ 368/396] diri AutoGM  S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.058 a_hon=0.017
+grid v7_blocked x8:  93%|█████████▎| 368/396 [1:51:58<04:11,  8.99s/celda]  [ 369/396] diri AutoGM  S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  93%|█████████▎| 369/396 [1:52:42<08:46, 19.48s/celda]  [ 370/396] diri AutoGM  S3 a=0.5 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.067 a_hon=0.011
+grid v7_blocked x8:  93%|█████████▎| 370/396 [1:52:51<07:06, 16.39s/celda]  [ 371/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.054 a_hon=0.020
+grid v7_blocked x8:  94%|█████████▎| 371/396 [1:53:09<07:00, 16.80s/celda]  [ 372/396] diri AutoGM  S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  94%|█████████▍| 372/396 [1:53:13<05:10, 12.93s/celda]  [ 373/396] diri AutoGM-full S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  94%|█████████▍| 373/396 [1:53:18<04:01, 10.49s/celda]  [ 374/396] diri AutoGM-full S3 a=0.3 fo=None b=0.4 constrained ASR=1.00 DR=0.00 a_mal=0.039 a_hon=0.030
+grid v7_blocked x8:  94%|█████████▍| 374/396 [1:53:38<04:55, 13.44s/celda]  [ 375/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 None        ASR=0.31 DR=0.67 a_mal=0.011 a_hon=0.048
+grid v7_blocked x8:  95%|█████████▍| 375/396 [1:53:40<03:30, 10.01s/celda]  [ 376/396] diri AutoGM-full S4 a=0.3 fo=None b=0.4 constrained ASR=0.23 DR=0.73 a_mal=0.041 a_hon=0.028
+grid v7_blocked x8:  95%|█████████▍| 376/396 [1:53:45<02:53,  8.66s/celda]  [ 377/396] diri AutoGM-full S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  95%|█████████▌| 377/396 [1:54:25<05:42, 18.02s/celda]  [ 378/396] diri AutoGM-full S3 a=0.5 fo=None b=0.4 constrained ASR=0.33 DR=0.66 a_mal=0.059 a_hon=0.017
+grid v7_blocked x8:  95%|█████████▌| 378/396 [1:54:44<05:28, 18.25s/celda]  [ 379/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 None        ASR=0.26 DR=0.74 a_mal=0.019 a_hon=0.043
+grid v7_blocked x8:  96%|█████████▌| 379/396 [1:55:00<04:56, 17.45s/celda]  [ 380/396] diri AutoGM-full S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.032 a_hon=0.034
+grid v7_blocked x8:  96%|█████████▌| 380/396 [1:55:02<03:28, 13.01s/celda]  [ 381/396] diri AutoGM-PFL S3 a=0.3 fo=None b=0.4 constrained ASR=0.21 DR=0.41 a_mal=0.038 a_hon=0.030
+grid v7_blocked x8:  96%|█████████▌| 381/396 [1:58:31<17:55, 71.70s/celda]  [ 382/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 None        ASR=0.20 DR=0.69 a_mal=0.011 a_hon=0.048
+grid v7_blocked x8:  96%|█████████▋| 382/396 [1:58:32<11:47, 50.51s/celda]  [ 383/396] diri AutoGM-PFL S0 a=0.3 fo=None b=0.0 None        ASR=0.09 DR=0.75 
+grid v7_blocked x8:  97%|█████████▋| 383/396 [1:58:33<07:42, 35.61s/celda]  [ 384/396] diri AutoGM-PFL S4 a=0.3 fo=None b=0.4 constrained ASR=0.22 DR=0.72 a_mal=0.040 a_hon=0.029
+grid v7_blocked x8:  97%|█████████▋| 384/396 [1:58:37<05:14, 26.24s/celda]  [ 385/396] diri AutoGM-PFL S3 a=0.5 fo=None b=0.4 constrained ASR=0.05 DR=0.89 a_mal=0.058 a_hon=0.017
+grid v7_blocked x8:  97%|█████████▋| 385/396 [1:59:40<06:50, 37.33s/celda]  [ 386/396] diri AutoGM-PFL S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  97%|█████████▋| 386/396 [1:59:46<04:37, 27.71s/celda]  [ 387/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 None        ASR=0.18 DR=0.82 a_mal=0.019 a_hon=0.043
+grid v7_blocked x8:  98%|█████████▊| 387/396 [1:59:54<03:16, 21.88s/celda]  [ 388/396] diri AutoGM-PFL S4 a=0.5 fo=None b=0.4 constrained ASR=0.17 DR=0.83 a_mal=0.032 a_hon=0.035
+grid v7_blocked x8:  98%|█████████▊| 388/396 [1:59:58<02:12, 16.53s/celda]  [ 389/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.036 a_hon=0.031
+grid v7_blocked x8:  98%|█████████▊| 389/396 [2:00:17<02:01, 17.38s/celda]  [ 390/396] diri D-WFA   S0 a=0.3 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  98%|█████████▊| 390/396 [2:00:19<01:16, 12.68s/celda]  [ 391/396] diri D-WFA   S3 a=0.3 fo=None b=0.4 constrained ASR=0.26 DR=0.33 a_mal=0.063 a_hon=0.014
+grid v7_blocked x8:  99%|█████████▊| 391/396 [2:00:21<00:46,  9.34s/celda]  [ 392/396] diri D-WFA   S4 a=0.3 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.054 a_hon=0.020
+grid v7_blocked x8:  99%|█████████▉| 392/396 [2:00:24<00:30,  7.57s/celda]  [ 393/396] diri D-WFA   S0 a=0.5 fo=None b=0.0 None        ASR=0.00 DR=1.00 
+grid v7_blocked x8:  99%|█████████▉| 393/396 [2:01:03<00:50, 16.92s/celda]  [ 394/396] diri D-WFA   S3 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=0.67 a_mal=0.060 a_hon=0.016
+grid v7_blocked x8:  99%|█████████▉| 394/396 [2:01:09<00:27, 13.79s/celda]  [ 395/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 None        ASR=0.00 DR=1.00 a_mal=0.041 a_hon=0.028
+  [ 396/396] diri D-WFA   S4 a=0.5 fo=None b=0.4 constrained ASR=0.00 DR=1.00 a_mal=0.054 a_hon=0.020
+grid v7_blocked x8: 100%|██████████| 396/396 [2:01:17<00:00,  9.16s/celda]grid v7_blocked x8: 100%|██████████| 396/396 [2:01:17<00:00, 18.38s/celda]
+[grid_f4] guardado /root/fl-fdd-dual-adversary/results/F4_grid__v7_blocked.json  (7278.1s)  checkpoint=/root/fl-fdd-dual-adversary/results/F4_grid__v7_blocked.json.jsonl
