@@ -138,6 +138,59 @@ def load_dataset(raw_dir: str, file_map: dict, channels=("DE", "FE"),
     return X, y, {"meta": meta, "skipped": skipped}
 
 
+def load_dataset_split(raw_dir: str, file_map: dict, channels=("DE", "FE"),
+                       window: int = 2048, stride: int = 2048, test_frac: float = 0.2,
+                       gap: int | None = None, normalize: bool = True):
+    """Carga CWRU con SPLIT TEMPORAL POR ARCHIVO (sin fuga train/test).
+
+    A diferencia del split aleatorio sobre ventanas ya solapadas (que filtra: una ventana de test puede
+    solapar ~75% con una de train cuando stride<window), aquí cada señal se corta en un bloque contiguo de
+    train (primeros (1-test_frac)) y uno de test (últimos test_frac) ANTES de ventanear, con una banda de
+    guarda `gap` (por defecto = window) entre ambos. Como los bloques son disjuntos y las ventanas se generan
+    dentro de cada bloque, ninguna ventana de test comparte muestras con una de train -> protocolo sin fuga.
+
+    Devuelve (Xtr, ytr, Xte, yte) ya segmentados y normalizados por ventana. Mantiene stride (volumen ~igual).
+    """
+    gap = window if gap is None else gap
+
+    def _windows(sig1d_by_ch, a, b):
+        segs = [segment_signal(ch[a:b], window, stride) for ch in sig1d_by_ch]
+        n = min(len(s) for s in segs) if segs else 0
+        if n == 0:
+            return np.empty((0, len(channels), window))
+        stacked = np.stack([s[:n] for s in segs], axis=1)
+        if normalize:
+            mu = stacked.mean(axis=2, keepdims=True)
+            sd = stacked.std(axis=2, keepdims=True) + 1e-8
+            stacked = (stacked - mu) / sd
+        return stacked
+
+    Xtr, ytr, Xte, yte = [], [], [], []
+    skipped = []
+    for fname, info in file_map.items():
+        path = os.path.join(raw_dir, fname)
+        if not os.path.exists(path):
+            skipped.append((fname, "no encontrado")); continue
+        try:
+            sig = load_mat_file(path)
+        except ValueError as e:
+            skipped.append((fname, str(e))); continue
+        chans = [sig[ch] for ch in channels]
+        L = min(len(c) for c in chans)
+        boundary = int((1.0 - test_frac) * L)
+        tr = _windows(chans, 0, boundary)                    # bloque train contiguo
+        te = _windows(chans, boundary + gap, L)              # bloque test contiguo (tras la guarda)
+        if len(tr) == 0 or len(te) == 0:
+            skipped.append((fname, "bloque más corto que la ventana")); continue
+        Xtr.append(tr); ytr.append(np.full(len(tr), info["clase"], dtype=np.int64))
+        Xte.append(te); yte.append(np.full(len(te), info["clase"], dtype=np.int64))
+    if not Xtr:
+        empty = np.empty((0, len(channels), window))
+        return empty, np.empty((0,), np.int64), empty, np.empty((0,), np.int64)
+    return (np.concatenate(Xtr), np.concatenate(ytr),
+            np.concatenate(Xte), np.concatenate(yte))
+
+
 def _self_test():
     """Autodiagnóstico: usa raw/ si hay .mat; si no, valida el pipeline con señal sintética."""
     raw = os.path.join(os.path.dirname(__file__), "raw")

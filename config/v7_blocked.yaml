@@ -1,0 +1,42 @@
+# v7_blocked — BLINDAJE: re-verifica el hallazgo de v6 con SPLIT TEMPORAL SIN FUGA.
+# v2-v6 usaron split aleatorio sobre ventanas solapadas (stride 512 < window 2048) -> una ventana de test
+# puede solapar ~75% con una de train (fuga optimista). v7 corta cada senal en bloques contiguos train/test
+# ANTES de ventanear (con banda de guarda) -> cero solape train/test. Si el cruce "ningun M2 sobrevive los
+# dos vectores" se sostiene aqui, los numeros quedan blindados para revisores. Mismo grid que v6 (flip).
+name: v7_blocked
+description: >
+  Re-verificacion del hallazgo v6 (ningun M2 sobrevive Adv2-modelo S3 + Adv1-sensor S4-flip) bajo split
+  TEMPORAL sin fuga. 5 defensas x 10 semillas, alpha{0.3,0.5} x beta{0.4}, S0+S3+S4.
+
+data:
+  window: 2048
+  stride: 512
+  split: blocked          # <-- clave: split temporal por archivo, sin fuga train/test
+
+fl:
+  n_clients: 30
+  rounds: 40
+  local_epochs: 2
+  lr: 0.001
+  batch_size: 64
+  theta: 0.1
+
+grid:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  alphas: [0.3, 0.5]
+  betas: [0.4]
+  defenses: [FedAvg, AutoGM, AutoGM-full, AutoGM-PFL, D-WFA]
+  scenarios: [S0, S3, S4]
+  modes: [constrained]
+  fault_owners: []
+  target_class: 3
+
+attack:
+  model_sigma: 0.5
+  model_boost: 4.0
+  model_tau: 1.0
+  sensor_frac: 0.3
+  sensor_gamma: 1.0
+  sensor_mode: flip
+
+# Celdas: 10 x 5 x 2 x [S0(1)+beta0.4(S3:1 + S4:None + S4:constrained=3)] = 400. RTX 4000 Ada ~2h.

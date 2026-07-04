@@ -20,7 +20,7 @@ import os, sys, json, argparse, time
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from data.load_cwru import load_dataset, FILE_MAP
+from data.load_cwru import load_dataset, load_dataset_split, FILE_MAP
 from data.partition import dirichlet_partition, concentrated_partition
 from models.cnn1d import build_model
 from federated.fedavg import run_fl, evaluate, make_loader, fedavg_aggregate
@@ -47,6 +47,7 @@ def load_config(path):
     cfg.setdefault("name", os.path.splitext(os.path.basename(path))[0])
     cfg.setdefault("description", "")
     cfg.setdefault("data", {}); cfg["data"].setdefault("window", 2048); cfg["data"].setdefault("stride", 2048)
+    cfg["data"].setdefault("split", "random")  # 'random' (v1-v6, split por ventanas) o 'blocked' (temporal, sin fuga)
     cfg.setdefault("fl", {}); cfg["fl"].setdefault("n_clients", 10); cfg["fl"].setdefault("rounds", 20)
     cfg["fl"].setdefault("local_epochs", 2); cfg["fl"].setdefault("lr", 1e-3); cfg["fl"].setdefault("batch_size", 64)
     cfg["fl"].setdefault("theta", 0.1)   # regularizacion Ditto para la defensa AutoGM-PFL (0 = local puro)
@@ -65,18 +66,27 @@ def load_config(path):
     return cfg
 
 
-def load_split(window, stride, test_frac=0.2, split_seed=0):
-    """Carga CWRU (window/stride) y hace split estratificado train/test (cacheado por window/stride)."""
-    key = ("split", window, stride)
+def load_split(window, stride, test_frac=0.2, split_seed=0, split="random"):
+    """Carga CWRU (window/stride) y hace split train/test (cacheado por window/stride/split).
+
+    split='random'  : split estratificado sobre ventanas ya generadas (v1-v6). FUGA si stride<window
+                      (ventanas de test solapan con las de train).
+    split='blocked' : split TEMPORAL por archivo (bloques contiguos train/test con guarda) -> SIN fuga.
+    """
+    key = ("split", window, stride, split)
     if key not in _CACHE:
-        X, y, _ = load_dataset(os.path.join(HERE, "data", "raw"), FILE_MAP,
-                               channels=("DE", "FE"), window=window, stride=stride)
-        rng = np.random.default_rng(split_seed)
-        tr, te = [], []
-        for c in np.unique(y):
-            idx = np.where(y == c)[0]; rng.shuffle(idx)
-            k = int(test_frac * len(idx)); te += idx[:k].tolist(); tr += idx[k:].tolist()
-        _CACHE[key] = (X[np.array(tr)], y[np.array(tr)], X[np.array(te)], y[np.array(te)])
+        raw = os.path.join(HERE, "data", "raw")
+        if split == "blocked":
+            _CACHE[key] = load_dataset_split(raw, FILE_MAP, channels=("DE", "FE"),
+                                             window=window, stride=stride, test_frac=test_frac)
+        else:
+            X, y, _ = load_dataset(raw, FILE_MAP, channels=("DE", "FE"), window=window, stride=stride)
+            rng = np.random.default_rng(split_seed)
+            tr, te = [], []
+            for c in np.unique(y):
+                idx = np.where(y == c)[0]; rng.shuffle(idx)
+                k = int(test_frac * len(idx)); te += idx[:k].tolist(); tr += idx[k:].tolist()
+            _CACHE[key] = (X[np.array(tr)], y[np.array(tr)], X[np.array(te)], y[np.array(te)])
     return _CACHE[key]
 
 
@@ -93,7 +103,7 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
     """Corre UNA celda del grid y devuelve su registro."""
     d, fl, at = cfg["data"], cfg["fl"], cfg["attack"]
     target = cfg["grid"]["target_class"]
-    Xtr, ytr, Xte, yte = load_split(d["window"], d["stride"])
+    Xtr, ytr, Xte, yte = load_split(d["window"], d["stride"], split=d.get("split", "random"))
     model_fn = lambda: build_model(in_channels=2, n_classes=4)
 
     if partition == "dirichlet":
