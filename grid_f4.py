@@ -160,8 +160,19 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
                              lr=fl["lr"], batch_size=fl["batch_size"], aggregate=AGGS[defense],
                              malicious_ids=mal, model_attack_fn=atk, device=device, seed=seed, verbose=False)
         ev = evaluate(model, make_loader(Xte, yte, shuffle=False), device, n_classes=4)
-        met = detection_metrics(ev["cm"])
+        cm = ev["cm"]
+        met = detection_metrics(cm)
         am, ah = _evasion(hist)
+
+    # Persiste la matriz de confusion (filas=clase real, columnas=clase predicha) para poder recalcular
+    # post-hoc metricas que el grid no guardaba (p.ej. ASR restringido a UNA clase, en vez de "ASR" =
+    # todas las fallas -> Normal). ASR_target = fraccion de la clase objetivo (target_class) clasificada
+    # como Normal; es la lectura "clase objetivo" que ya narraban los reportes pero que ASR no medía.
+    cm_arr = np.asarray(cm)
+    normal_class = 0
+    tgt_total = float(cm_arr[target].sum())
+    asr_target = float(cm_arr[target, normal_class] / tgt_total) if tgt_total else None
+
     return {
         "partition": partition, "defense": defense, "scenario": scenario, "seed": seed,
         "alpha": alpha, "fault_owners": fault_owners if partition == "concentrated" else None,
@@ -169,8 +180,10 @@ def run_cell(cfg, *, partition, defense, scenario, seed, beta=0.0, alpha=None,
         "n_victims": (len(victim_ids) if victim_ids is not None else 0),
         "victim_ids": victim_ids if victim_ids is not None else [],
         "acc": met["acc"], "DR": met["DR"], "FAR": met["FAR"], "ASR": met["ASR"],
+        "ASR_target": asr_target,
         "recall_per_class": [float(r) for r in ev["recall"]],
         "a_malicious": am, "a_honest": ah,
+        "cm": [[int(x) for x in row] for row in cm_arr],
     }
 
 
