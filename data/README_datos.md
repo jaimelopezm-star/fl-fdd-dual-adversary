@@ -29,6 +29,19 @@ necesitamos archivos que contengan **ambos canales simultáneamente**.
 (La tabla completa está en la página de CWRU; `load_cwru.py` usa un mapeo configurable.)
 
 ## Estado
-- [ ] `.mat` descargados en `raw/`
-- [ ] Verificada disponibilidad de canales DE+FE
-- [ ] Mapeo archivo→(clase, severidad, carga) confirmado
+- [x] `.mat` descargados en `raw/`
+- [x] Verificada disponibilidad de canales DE+FE
+- [x] Mapeo archivo→(clase, severidad, carga) confirmado
+
+## Verificación de integridad (`raw_manifest.md5`)
+Los 16 `.mat` de `FILE_MAP` (`load_cwru.py`) NO se versionan (ver `.gitignore`), pero su md5 sí
+queda registrado en `raw_manifest.md5` — generado sobre la copia usada en la campaña v1-v7
+(pod RunPod, Aug 2026). Para regenerar y validar `raw/`:
+
+```bash
+python download_cwru.py          # baja los 16 .mat de FILE_MAP a raw/
+cd raw && md5sum -c ../raw_manifest.md5   # compara contra el manifiesto versionado
+```
+
+Si algún hash no coincide, el archivo de CWRU cambió respecto al usado en la campaña original;
+investigar antes de reusar resultados anteriores como referencia.
